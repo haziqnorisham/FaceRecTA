@@ -1,0 +1,40 @@
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+  <div class="container">
+    <img src="https://i.ibb.co/Jch15z5/cbs.png" class="img-responsive h-25" alt="cbs" border="0">
+    <h1>Time attendence system</h1>
+  </div>
+
+  <div class="container">
+
+    <form action="/action_page.php">
+      Choose date to query
+      <input type="date" name="bday">
+      <input type="submit">
+    </form>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Employee ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Enter Time</th>
+          <th scope="col">Exit Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for dat in data %}
+        <tr>
+          <th scope="row">{{ dat.id }}</th>
+          <td>{{ dat.name }}</td>
+          <td>{{ dat.time }}</td>
+          <td>{{ dat.time }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
