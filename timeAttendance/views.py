@@ -9,6 +9,7 @@ from sqlite3 import Error
 
 from timeAttendance.models import EmployeeAttendance
 from django.forms.models import model_to_dict
+from datetime import date
 
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
@@ -60,6 +61,7 @@ def get_terminal_information(ipAddress, username, passwrod):
 @csrf_exempt
 def GetDeviceID(request):
 
+    todays_employee = []
     data=[]
     emp=[]
     emp_grouped = [[None]]
@@ -107,12 +109,22 @@ def GetDeviceID(request):
 
     temp_data = EmployeeAttendance.objects.all()
     temp_data_list = []
-    for temp_data2 in temp_data:
-        temp_data_list.append(model_to_dict(temp_data2))
+    #for temp_data2 in temp_data:
+        #temp_data_list.append(model_to_dict(temp_data2))
 
     print(type(temp_data))
 
+    employee_id_list = EmployeeAttendance.objects.values('employee_id').distinct()
 
+    for employee_id_dict in employee_id_list:
+        temp2 = EmployeeAttendance.objects.filter(employee_id = employee_id_dict['employee_id'], capture_time__contains = str(date.today()))
+
+        temp2_earliest = temp2.earliest('capture_time')
+        temp2_latest = temp2.latest('capture_time')
+
+        temp_employee_daily_info = {'id': temp2_earliest.id, 'employee_id': temp2_earliest.employee_id, 'name': temp2_earliest.name, 'capture_time_earliest': temp2_earliest.capture_time, 'capture_location_earliest': temp2_earliest.capture_location, 'capture_time_latest': temp2_latest.capture_time, 'capture_location_latest':temp2_latest.capture_location}
+
+        temp_data_list.append(temp_employee_daily_info)
     #MUST BE A LIST OF DICTIONARY
     context= {
         'data': temp_data_list
