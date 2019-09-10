@@ -8,6 +8,7 @@ import sqlite3
 from sqlite3 import Error
 
 from timeAttendance.models import EmployeeAttendance
+from django.forms.models import model_to_dict
 
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
@@ -75,7 +76,7 @@ def GetDeviceID(request):
     #rows = [rows[0], rows[-1]]
 
 
-
+    '''
     for row in rows:
         data.append({'id':row[0],'name':row[1],'time':row[2]})
 
@@ -102,9 +103,15 @@ def GetDeviceID(request):
             if (temp_dat['id'] == emp[i]['id']):
                 emp_grouped[i][index]=temp_dat
 
+    '''
 
+    temp_data = model_to_dict(EmployeeAttendance.objects.get(id=1))
+    print(type(temp_data))
+    temp_data_list = [temp_data]
+
+    #MUST BE A LIST OF DICTIONARY 
     context= {
-        'data': emp
+        'data': temp_data_list
         }
 
     return render(request, 'timeAttendance/deviceDetails.html', context)
