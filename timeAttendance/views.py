@@ -105,11 +105,15 @@ def GetDeviceID(request):
 
     '''
 
-    temp_data = model_to_dict(EmployeeAttendance.objects.get(id=1))
-    print(type(temp_data))
-    temp_data_list = [temp_data]
+    temp_data = EmployeeAttendance.objects.all()
+    temp_data_list = []
+    for temp_data2 in temp_data:
+        temp_data_list.append(model_to_dict(temp_data2))
 
-    #MUST BE A LIST OF DICTIONARY 
+    print(type(temp_data))
+
+
+    #MUST BE A LIST OF DICTIONARY
     context= {
         'data': temp_data_list
         }
