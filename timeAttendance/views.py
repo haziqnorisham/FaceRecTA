@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 import sqlite3
 from sqlite3 import Error
 
-
+from timeAttendance.models import EmployeeAttendance
 
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
