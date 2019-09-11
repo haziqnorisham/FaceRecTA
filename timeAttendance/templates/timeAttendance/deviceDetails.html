@@ -16,7 +16,28 @@
       <input type="submit">
     </form>
 
-    <table class="table">
+    <div class="container">
+
+
+    Minumum Hours Worked :
+    <input type="number" name="quantity" min="1" max="12" id="hour_input" value=8>
+
+    <button type="button" id="number_btn" onclick="myFunction()">Show</button>
+    <button type="button" id="reset_btn" onclick="myFunction2()">Reset</button>
+
+    </div>
+
+    <div class="container">
+
+
+        Enter Time : <input type="time" name="usr_time" id="time_input">
+        <button type="button" id="show_btn" onclick="checkTime()">Show</button>
+
+
+    </div>
+
+
+    <table class="table" id="timeTable">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -26,6 +47,7 @@
           <th scope="col">Enter Location</th>
           <th scope="col">Exit Time</th>
           <th scope="col">Exit Location</th>
+          <th scope="col">Working Hours</th>
         </tr>
       </thead>
       <tbody>
@@ -38,9 +60,72 @@
           <td>{{ dat.capture_location_earliest }}</td>
           <td>{{ dat.capture_time_latest }}</td>
           <td>{{ dat.capture_location_latest }}</td>
+          <td>{{ dat.working_hours }}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
+
+<script>
+function myFunction(){
+
+  table = document.getElementById("timeTable");
+  input = document.getElementById("hour_input");
+  number_of_rows = table.getElementsByTagName("tr").length;
+
+  var i;
+  for (i = 0; i < number_of_rows-1 ; i++) {
+    table.rows[i+1].cells[7].style.color = "";
+    table.rows[i+1].cells[7].style.fontWeight = "";
+  }
+
+  for (i = 0; i < number_of_rows-1 ; i++) {
+    temp_hours_worked = table.rows[i+1].cells[7].innerHTML;
+    temp_hours_worked = temp_hours_worked.replace(':','');
+    temp_hours_worked = temp_hours_worked.replace(':','');
+
+    if(temp_hours_worked < (input.value * 10000)){
+      table.rows[i+1].cells[7].style.color = "red";
+      table.rows[i+1].cells[7].style.fontWeight = "900";
+    }
+
+  }
+
+}
+
+function myFunction2(){
+  table = document.getElementById("timeTable");
+  input = document.getElementById("hour_input");
+  number_of_rows = table.getElementsByTagName("tr").length;
+
+  var i;
+  for (i = 0; i < number_of_rows-1 ; i++) {
+    table.rows[i+1].cells[7].style.color = "";
+    table.rows[i+1].cells[7].style.fontWeight = "";
+
+    table.rows[i+1].cells[3].style.color = "";
+    table.rows[i+1].cells[3].style.fontWeight = "";
+  }
+}
+
+function checkTime(){
+  time_input = document.getElementById("time_input")
+  table = document.getElementById("timeTable");
+  number_of_rows = table.getElementsByTagName("tr").length;
+
+  var i;
+  for (i = 0; i < number_of_rows-1 ; i++) {
+    temp_enter_time = table.rows[i+1].cells[3].innerHTML;
+    temp_enter_time = temp_enter_time.substring(11, 16);
+
+
+    if(temp_enter_time > time_input.value){
+      table.rows[i+1].cells[3].style.color = "red";
+      table.rows[i+1].cells[3].style.fontWeight = "900";
+    }
+  }
+}
+</script>
+
 </body>

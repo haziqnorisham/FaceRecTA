@@ -9,7 +9,7 @@ from sqlite3 import Error
 
 from timeAttendance.models import EmployeeAttendance
 from django.forms.models import model_to_dict
-from datetime import date
+from datetime import date, datetime
 
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
@@ -122,7 +122,12 @@ def GetDeviceID(request):
         temp2_earliest = temp2.earliest('capture_time')
         temp2_latest = temp2.latest('capture_time')
 
-        temp_employee_daily_info = {'id': temp2_earliest.id, 'employee_id': temp2_earliest.employee_id, 'name': temp2_earliest.name, 'capture_time_earliest': temp2_earliest.capture_time, 'capture_location_earliest': temp2_earliest.capture_location, 'capture_time_latest': temp2_latest.capture_time, 'capture_location_latest':temp2_latest.capture_location}
+        temp2_datetime_earliest = datetime.strptime(temp2_earliest.capture_time,"%Y-%m-%dT%H:%M:%S")
+        temp2_datetime_latest = datetime.strptime(temp2_latest.capture_time,"%Y-%m-%dT%H:%M:%S")
+
+        working_hours = temp2_datetime_latest - temp2_datetime_earliest
+
+        temp_employee_daily_info = {'id': temp2_earliest.id, 'employee_id': temp2_earliest.employee_id, 'name': temp2_earliest.name, 'capture_time_earliest': temp2_earliest.capture_time, 'capture_location_earliest': temp2_earliest.capture_location, 'capture_time_latest': temp2_latest.capture_time, 'capture_location_latest':temp2_latest.capture_location, 'working_hours':str(working_hours)}
 
         temp_data_list.append(temp_employee_daily_info)
     #MUST BE A LIST OF DICTIONARY
