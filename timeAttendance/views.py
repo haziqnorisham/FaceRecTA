@@ -61,6 +61,18 @@ def get_terminal_information(ipAddress, username, passwrod):
 @csrf_exempt
 def GetDeviceID(request):
 
+    date2 = None
+
+    if request.GET.get('date'):
+        message = 'You submitted: %r' % request.GET['date']
+        date2 = datetime.strptime(request.GET['date'], "%Y-%m-%d" ).date()
+        print()
+        print(type(date.today()))
+        print(type(date2))
+        print()
+    else:
+        date2 = date.today()
+
     todays_employee = []
     data=[]
     emp=[]
@@ -117,7 +129,7 @@ def GetDeviceID(request):
     employee_id_list = EmployeeAttendance.objects.values('employee_id').distinct()
 
     for employee_id_dict in employee_id_list:
-        temp2 = EmployeeAttendance.objects.filter(employee_id = employee_id_dict['employee_id'], capture_time__contains = str(date.today()))
+        temp2 = EmployeeAttendance.objects.filter(employee_id = employee_id_dict['employee_id'], capture_time__contains = str(date2))
 
         temp2_earliest = temp2.earliest('capture_time')
         temp2_latest = temp2.latest('capture_time')

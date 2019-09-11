@@ -10,9 +10,9 @@
 
   <div class="container">
 
-    <form action="/action_page.php">
+    <form action="/time_attendance/btnAction/">
       Choose date to query
-      <input type="date" name="bday">
+      <input type="date" name="date" onload="date_value()" id="date_input">
       <input type="submit">
     </form>
 
@@ -30,9 +30,9 @@
     <div class="container">
 
 
-        Enter Time : <input type="time" name="usr_time" id="time_input">
+        Enter Time : <input type="time" name="usr_time" id="time_input" value="08:00">
         <button type="button" id="show_btn" onclick="checkTime()">Show</button>
-
+        <button type="button" id="show_btn" onclick="printDiv()">Print</button>
 
     </div>
 
@@ -65,6 +65,7 @@
         {% endfor %}
       </tbody>
     </table>
+    <iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
   </div>
 
 <script>
@@ -126,6 +127,32 @@ function checkTime(){
     }
   }
 }
+
+function printDiv(){
+  window.print()
+}
+
+function date_value(){
+
+  table = document.getElementById("timeTable");
+  temp_enter_time2 = table.rows[1].cells[3].innerHTML;
+  temp_enter_time2 = temp_enter_time2.substring(0, 10);
+
+
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+
+  console.log(temp_enter_time2)
+  today = temp_enter_time2
+
+  date_input = document.getElementById("date_input")
+
+  date_input.value = today
+}
+window.onload = date_value;
 </script>
 
 </body>
