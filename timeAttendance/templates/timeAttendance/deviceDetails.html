@@ -1,52 +1,92 @@
 <head>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+    hr.style {
+    	background-color: #fff;
+    	border-top: 2px dashed #8c8b8b;
+    }
+
+    .csb img {
+      height: 120px;
+    }
+  </style>
 </head>
 <body>
 
+  <div class="container text-center csb">
+    <img src="https://i.ibb.co/Jch15z5/cbs.png" class="img-responsive" alt="Responsive image" border="0">
+    <h2>Time attendence system</h2>
+  </div>
   <div class="container">
-    <img src="https://i.ibb.co/Jch15z5/cbs.png" class="img-responsive h-25" alt="cbs" border="0">
-    <h1>Time attendence system</h1>
+    <hr class="style"/>
   </div>
 
   <div class="container">
+  <div class="container">
+    <div class="row">
 
+
+   <div class="col-sm text-center">
     <form action="/time_attendance/btnAction/">
-      Choose date to query
+      Choose date to query :
       <input type="date" name="date" onload="date_value()" id="date_input">
-      <input type="submit">
+      <input type="submit" >
     </form>
+    </div>
 
-    <div class="container">
-
+ <div class="col-sm text-center">
 
     Minumum Hours Worked :
-    <input type="number" name="quantity" min="1" max="12" id="hour_input" value=8>
-
-    <button type="button" id="number_btn" onclick="myFunction()">Show</button>
-    <button type="button" id="reset_btn" onclick="myFunction2()">Reset</button>
-
-    </div>
-
-    <div class="container">
+    <input type="number" name="quantity" min="1" max="12" id="hour_input" value=8 onchange="myFunction()">
 
 
-        Enter Time : <input type="time" name="usr_time" id="time_input" value="08:00">
-        <button type="button" id="show_btn" onclick="checkTime()">Show</button>
-        <button type="button" id="show_btn" onclick="printDiv()">Print</button>
 
     </div>
 
-    <div class="container">
-      <form onsubmit="name_selector()">
-        <select name="Employee" id="name_filter" >
+
+<div class="col-sm text-center">
+
+        Enter Time :
+        <br>
+        <input type="time" name="usr_time" id="time_input" value="08:00" onchange="checkTime()">
+
+
+
+
+</div>
+  <div class="col-sm text-center">
+    Employee name :
+    <br>
+        <select name="Employee" id="name_filter" onchange="name_selector()" >
           <option value="all">All</option>
           {% for dat in data %}
           <option value={{ dat.name }}>{{ dat.name }}</option>
           {% endfor %}
         </select>
-      </form>
-      <button type="button" id="show_btn2" onclick="name_selector()">Show</button>
+      </div>
     </div>
+    <hr/>
+
+
+
+    <div class="row">
+      <div class="col-sm">  </div>
+      <div class="col-sm text-center">
+        <button type="button" id="reset_btn" onclick="myFunction2()" class="btn btn-dark">Reset</button>
+        <button type="button" id="show_btn" onclick="printDiv()" class="btn btn-dark">Print</button>
+      </div>
+      <div class="col-sm">  </div>
+
+
+    </div>
+    </div>
+    </div>
+    <div class="container">
+    <hr class="style"/>
+    </div>
+
+    <div class="container">
+
 
     <table class="table" id="timeTable">
       <thead>
@@ -127,6 +167,11 @@ function checkTime(){
   time_input = document.getElementById("time_input")
   table = document.getElementById("timeTable");
   number_of_rows = table.getElementsByTagName("tr").length;
+
+  for (i = 0; i < number_of_rows-1 ; i++) {
+      table.rows[i+1].cells[3].style.color = "";
+      table.rows[i+1].cells[3].style.fontWeight = "";
+    }
 
   var i;
   for (i = 0; i < number_of_rows-1 ; i++) {
