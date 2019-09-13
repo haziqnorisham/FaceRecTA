@@ -126,9 +126,10 @@ def GetDeviceID(request):
 
     print(type(temp_data))
 
-    employee_id_list = EmployeeAttendance.objects.values('employee_id').distinct()
+    employee_id_list = EmployeeAttendance.objects.values('employee_id').filter(capture_time__contains = str(date2)).distinct()
 
     for employee_id_dict in employee_id_list:
+
         temp2 = EmployeeAttendance.objects.filter(employee_id = employee_id_dict['employee_id'], capture_time__contains = str(date2))
 
         temp2_earliest = temp2.earliest('capture_time')
@@ -142,6 +143,7 @@ def GetDeviceID(request):
         temp_employee_daily_info = {'id': temp2_earliest.id, 'employee_id': temp2_earliest.employee_id, 'name': temp2_earliest.name, 'capture_time_earliest': temp2_earliest.capture_time, 'capture_location_earliest': temp2_earliest.capture_location, 'capture_time_latest': temp2_latest.capture_time, 'capture_location_latest':temp2_latest.capture_location, 'working_hours':str(working_hours)}
 
         temp_data_list.append(temp_employee_daily_info)
+
     #MUST BE A LIST OF DICTIONARY
     context= {
         'data': temp_data_list
