@@ -36,6 +36,17 @@
 
     </div>
 
+    <div class="container">
+      <form onsubmit="name_selector()">
+        <select name="Employee" id="name_filter" >
+          <option value="all">All</option>
+          {% for dat in data %}
+          <option value={{ dat.name }}>{{ dat.name }}</option>
+          {% endfor %}
+        </select>
+      </form>
+      <button type="button" id="show_btn2" onclick="name_selector()">Show</button>
+    </div>
 
     <table class="table" id="timeTable">
       <thead>
@@ -107,6 +118,8 @@ function myFunction2(){
 
     table.rows[i+1].cells[3].style.color = "";
     table.rows[i+1].cells[3].style.fontWeight = "";
+
+    table.rows[i+1].style.display = '';
   }
 }
 
@@ -152,6 +165,43 @@ function date_value(){
 
   date_input.value = today
 }
+
+function name_selector(){
+
+  var arr = [];
+
+  filter_value = document.getElementById("name_filter")
+  table = document.getElementById("timeTable");
+  number_of_rows = table.getElementsByTagName("tr").length;
+
+  var i;
+  var j = 0;
+
+
+  for (i = 0; i < number_of_rows-1 ; i++) {
+    table.rows[i+1].style.display = '';
+  }
+
+  for (i = 0; i < number_of_rows-1 ; i++) {
+
+    temp_name = table.rows[i+1].cells[2].innerHTML;
+    selector_name = filter_value.value;
+
+    if(temp_name == selector_name){
+      arr[j] = i+1;
+      j++;
+      continue;
+    }
+    else if(selector_name == "all"){
+      table.rows[i+1].style.display = '';
+    }
+    else{
+      table.rows[i+1].style.display = 'none';
+    }
+  }
+
+}
+
 window.onload = date_value;
 </script>
 
