@@ -62,15 +62,19 @@ def get_terminal_information(ipAddress, username, passwrod):
 def GetDeviceID(request):
 
     date2 = None
-
+    date_tag = None
     if request.GET.get('date'):
         message = 'You submitted: %r' % request.GET['date']
         date2 = datetime.strptime(request.GET['date'], "%Y-%m-%d" ).date()
+
+        date_tag = {'date' : request.GET['date']}
+
         print()
         print(type(date.today()))
         print(type(date2))
         print()
     else:
+        date_tag = {'date' : str(date.today())}
         date2 = date.today()
 
     todays_employee = []
@@ -146,7 +150,8 @@ def GetDeviceID(request):
 
     #MUST BE A LIST OF DICTIONARY
     context= {
-        'data': temp_data_list
+        'data': temp_data_list,
+        'date_tag': date_tag
         }
 
     return render(request, 'timeAttendance/deviceDetails.html', context)

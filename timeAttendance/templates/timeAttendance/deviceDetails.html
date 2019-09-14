@@ -1,9 +1,15 @@
 <head>
+  <br>
+  <br>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <style>
     hr.style {
     	background-color: #fff;
     	border-top: 2px dashed #8c8b8b;
+    }
+
+    hr.style2 {
+    	background-color: #f7f7f7;
     }
 
     .csb img {
@@ -32,6 +38,7 @@
       <input type="date" name="date" onload="date_value()" id="date_input">
       <input type="submit" >
     </form>
+    <sub><font color = "red"><i>Click submit after changin the date.</i></font></sub>
     </div>
 
  <div class="col-sm text-center">
@@ -46,7 +53,7 @@
 
 <div class="col-sm text-center">
 
-        Enter Time :
+        Shift Start Time :
         <br>
         <input type="time" name="usr_time" id="time_input" value="08:00" onchange="checkTime()">
 
@@ -65,7 +72,20 @@
         </select>
       </div>
     </div>
-    <hr/>
+    <hr class="style2"/>
+
+
+    <div class="row">
+      <div class="col-sm text-center">
+        <h5>Displaying for : <b><i><font color="red">{{ date_tag.date }}</font></i></b> </h5>
+      </div>
+    </div>
+
+
+
+
+<hr class="style2"/>
+    </div>
 
 
 
@@ -77,8 +97,6 @@
       </div>
       <div class="col-sm">  </div>
 
-
-    </div>
     </div>
     </div>
     <div class="container">
