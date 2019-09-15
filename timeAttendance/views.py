@@ -9,7 +9,7 @@ from sqlite3 import Error
 
 from timeAttendance.models import EmployeeAttendance
 from django.forms.models import model_to_dict
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
@@ -63,16 +63,15 @@ def GetDeviceID(request):
 
     date2 = None
     date_tag = None
-    if request.GET.get('date'):
+    if request.GET.get('date') and request.GET.get('date2'):
         message = 'You submitted: %r' % request.GET['date']
         date2 = datetime.strptime(request.GET['date'], "%Y-%m-%d" ).date()
-
         date_tag = {'date' : request.GET['date']}
-
-        print()
-        print(type(date.today()))
-        print(type(date2))
-        print()
+        date_to = datetime.strptime(request.GET['date2'], "%Y-%m-%d" ).date()
+        #print()
+        #print(request.GET['date'])
+        #print(request.GET['date2'])
+        #print()
     else:
         date_tag = {'date' : str(date.today())}
         date2 = date.today()
@@ -90,63 +89,49 @@ def GetDeviceID(request):
     cur.execute(r"SELECT * FROM attendence WHERE date(enter_time) = date('now')")
     rows = cur.fetchall()
 
-
-    #rows = [rows[0], rows[-1]]
-
-
-    '''
-    for row in rows:
-        data.append({'id':row[0],'name':row[1],'time':row[2]})
-
-    for rows in data:
-
-        insert_check = True
-
-        if not emp:
-            emp.append(rows)
-            print('inserted')
-            continue
-
-        for rows_check in emp:
-            if (rows['id'] == rows_check['id']):
-                insert_check = False
-
-
-        if insert_check:
-            print('true')
-            emp.append(rows)
-
-    for i in range(len(emp)):
-        for index, temp_dat in enumerate(data):
-            if (temp_dat['id'] == emp[i]['id']):
-                emp_grouped[i][index]=temp_dat
-
-    '''
-
     temp_data = EmployeeAttendance.objects.all()
     temp_data_list = []
+    date_range = []
     #for temp_data2 in temp_data:
         #temp_data_list.append(model_to_dict(temp_data2))
 
-    print(type(temp_data))
+    #print(type(temp_data))
+    try:
+        delta = date_to - date2
 
-    employee_id_list = EmployeeAttendance.objects.values('employee_id').filter(capture_time__contains = str(date2)).distinct()
+        for i in range(delta.days + 1):
+            day = date2 + timedelta(days=i)
+            print()
+            print(day)
+            print()
+            date_range.append(day)
 
-    for employee_id_dict in employee_id_list:
+    except:
+        pass
 
-        temp2 = EmployeeAttendance.objects.filter(employee_id = employee_id_dict['employee_id'], capture_time__contains = str(date2))
+    employee_id_list_list = []
+    for date_range_individual in date_range:
+        #employee_id_list = EmployeeAttendance.objects.values('employee_id').filter(capture_time__contains = str(date2)).distinct()
+        employee_id_list = EmployeeAttendance.objects.values('employee_id').filter(capture_time__contains = str(date_range_individual)).distinct()
+        #employee_id_list_list.append(EmployeeAttendance.objects.values('employee_id').filter(capture_time__contains = str(date_range_individual)).distinct())
 
-        temp2_earliest = temp2.earliest('capture_time')
-        temp2_latest = temp2.latest('capture_time')
 
-        temp2_datetime_earliest = datetime.strptime(temp2_earliest.capture_time,"%Y-%m-%dT%H:%M:%S")
-        temp2_datetime_latest = datetime.strptime(temp2_latest.capture_time,"%Y-%m-%dT%H:%M:%S")
+        for employee_id_dict in employee_id_list:
 
-        working_hours = temp2_datetime_latest - temp2_datetime_earliest
+            #temp2 = EmployeeAttendance.objects.filter(employee_id = employee_id_dict['employee_id'], capture_time__contains = str(date2))
+            temp2 = EmployeeAttendance.objects.filter(employee_id = employee_id_dict['employee_id'], capture_time__contains = str(date_range_individual))
 
-        temp_employee_daily_info = {'id': temp2_earliest.id, 'employee_id': temp2_earliest.employee_id, 'name': temp2_earliest.name, 'capture_time_earliest': temp2_earliest.capture_time, 'capture_location_earliest': temp2_earliest.capture_location, 'capture_time_latest': temp2_latest.capture_time, 'capture_location_latest':temp2_latest.capture_location, 'working_hours':str(working_hours)}
+            temp2_earliest = temp2.earliest('capture_time')
+            temp2_latest = temp2.latest('capture_time')
 
-        temp_data_list.append(temp_employee_daily_info)
+            temp2_datetime_earliest = datetime.strptime(temp2_earliest.capture_time,"%Y-%m-%dT%H:%M:%S")
+            temp2_datetime_latest = datetime.strptime(temp2_latest.capture_time,"%Y-%m-%dT%H:%M:%S")
+
+            working_hours = temp2_datetime_latest - temp2_datetime_earliest
+
+            temp_employee_daily_info = {'id': temp2_earliest.id, 'employee_id': temp2_earliest.employee_id, 'name': temp2_earliest.name, 'capture_time_earliest': temp2_earliest.capture_time, 'capture_location_earliest': temp2_earliest.capture_location, 'capture_time_latest': temp2_latest.capture_time, 'capture_location_latest':temp2_latest.capture_location, 'working_hours':str(working_hours)}
+
+            temp_data_list.append(temp_employee_daily_info)
 
     #MUST BE A LIST OF DICTIONARY
     context= {
