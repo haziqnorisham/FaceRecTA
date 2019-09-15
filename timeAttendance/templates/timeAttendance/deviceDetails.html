@@ -117,6 +117,7 @@
           <th scope="col">Exit Time</th>
           <th scope="col">Exit Location</th>
           <th scope="col">Working Hours</th>
+          <th scope="col">Lateness</th>
         </tr>
       </thead>
       <tbody>
@@ -130,6 +131,7 @@
           <td>{{ dat.capture_time_latest }}</td>
           <td>{{ dat.capture_location_latest }}</td>
           <td>{{ dat.working_hours }}</td>
+          <td>-</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -178,6 +180,10 @@ function myFunction2(){
     table.rows[i+1].cells[3].style.fontWeight = "";
 
     table.rows[i+1].style.display = '';
+
+    table.rows[i+1].cells[8].innerHTML = "-";
+    table.rows[i+1].cells[8].style.fontWeight = "";
+    table.rows[i+1].cells[8].style.color = "";
   }
 }
 
@@ -189,6 +195,9 @@ function checkTime(){
   for (i = 0; i < number_of_rows-1 ; i++) {
       table.rows[i+1].cells[3].style.color = "";
       table.rows[i+1].cells[3].style.fontWeight = "";
+      table.rows[i+1].cells[8].innerHTML = "-";
+      table.rows[i+1].cells[8].style.fontWeight = "";
+      table.rows[i+1].cells[8].style.color = "";
     }
 
   var i;
@@ -200,8 +209,40 @@ function checkTime(){
     if(temp_enter_time > time_input.value){
       table.rows[i+1].cells[3].style.color = "red";
       table.rows[i+1].cells[3].style.fontWeight = "900";
+
+
+
+      d1 = Date.parse(table.rows[i+1].cells[3].innerHTML);
+      d1 = new Date(d1);
+      d2 = Date.parse(table.rows[i+1].cells[3].innerHTML);
+      d2 = new Date(d2);
+      d2.setHours(time_input.value.substring(0,2));
+      d2.setMinutes(time_input.value.substring(3,5));
+
+      d3 = d1-d2;
+
+      console.log(d3);
+
+      table.rows[i+1].cells[8].innerHTML = msToTime(d3)
+
+      table.rows[i+1].cells[8].style.fontWeight = "900";
+      table.rows[i+1].cells[8].style.color = "red";
     }
   }
+}
+
+function msToTime(duration) {
+    var milliseconds = parseInt((duration%1000)/100)
+        , seconds = parseInt((duration/1000)%60)
+        , minutes = parseInt((duration/(1000*60))%60)
+        , hours = parseInt((duration/(1000*60*60))%24);
+
+    hours = (hours < 10) ? "0" + hours : hours;
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+    //return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+    return hours + ":" + minutes;
 }
 
 function printDiv(){
