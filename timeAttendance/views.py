@@ -67,6 +67,7 @@ def GetDeviceID(request):
         message = 'You submitted: %r' % request.GET['date']
         date2 = datetime.strptime(request.GET['date'], "%Y-%m-%d" ).date()
         date_tag = {'date' : request.GET['date']}
+        date_tag_to = {'date_to' : request.GET['date2']}
         date_to = datetime.strptime(request.GET['date2'], "%Y-%m-%d" ).date()
         #print()
         #print(request.GET['date'])
@@ -74,7 +75,10 @@ def GetDeviceID(request):
         #print()
     else:
         date_tag = {'date' : str(date.today())}
+        date_tag_to = {'date_to' : str(date.today())}
+
         date2 = date.today()
+        date_to = date.today()
 
     todays_employee = []
     data=[]
@@ -109,6 +113,13 @@ def GetDeviceID(request):
     except:
         pass
 
+    date_range_dict_list = []
+    for date_temp in date_range:
+        date_range_dict = {
+            'date' : date_temp
+            }
+        date_range_dict_list.append(date_range_dict)
+
     employee_id_list_list = []
     for date_range_individual in date_range:
         #employee_id_list = EmployeeAttendance.objects.values('employee_id').filter(capture_time__contains = str(date2)).distinct()
@@ -129,14 +140,16 @@ def GetDeviceID(request):
 
             working_hours = temp2_datetime_latest - temp2_datetime_earliest
 
-            temp_employee_daily_info = {'id': temp2_earliest.id, 'employee_id': temp2_earliest.employee_id, 'name': temp2_earliest.name, 'capture_time_earliest': temp2_earliest.capture_time, 'capture_location_earliest': temp2_earliest.capture_location, 'capture_time_latest': temp2_latest.capture_time, 'capture_location_latest':temp2_latest.capture_location, 'working_hours':str(working_hours)}
+            temp_employee_daily_info = {'id': temp2_earliest.id, 'employee_id': temp2_earliest.employee_id, 'name': temp2_earliest.name, 'capture_time_earliest': temp2_earliest.capture_time, 'capture_location_earliest': temp2_earliest.capture_location, 'capture_time_latest': temp2_latest.capture_time, 'capture_location_latest':temp2_latest.capture_location, 'working_hours':str(working_hours), 'date':date_range_individual}
 
             temp_data_list.append(temp_employee_daily_info)
 
     #MUST BE A LIST OF DICTIONARY
     context= {
         'data': temp_data_list,
-        'date_tag': date_tag
+        'date_tag': date_tag,
+        'date_tag2': date_tag_to,
+        'date_range': date_range_dict_list
         }
 
     return render(request, 'timeAttendance/deviceDetails.html', context)
