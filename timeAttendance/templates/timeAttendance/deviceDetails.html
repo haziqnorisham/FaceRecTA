@@ -34,12 +34,37 @@
 
    <div class="col-sm text-center">
     <form action="/time_attendance/btnAction/">
-      Choose date to query :
-      <input type="date" name="date" onload="date_value()" id="date_input">
-      <input type="submit" >
+      <div class="row text-center">
+        Choose date to query :
+        <br>
+      </div>
+
+      <div class="row">
+        <div class="col-sm text-right">
+            From :
+        </div>
+        <div class="col-sm">
+          <input type="date" name="date" onload="date_value()" id="date_input">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm text-right">
+          To :
+        </div>
+
+        <div class="col-sm">
+          <input type="date" name="date" onload="date_value()" id="date_input">
+         </div>
+      </div>
+    <input type="submit" >
     </form>
+
     <sup><font color = "red"><i>Click submit after changin the date.</i></font></sup>
     </div>
+
+
+
 
  <div class="col-sm text-center">
 
@@ -117,7 +142,7 @@
           <th scope="col">Exit Time</th>
           <th scope="col">Exit Location</th>
           <th scope="col">Working Hours</th>
-          <th scope="col">Lateness</th>
+          <th scope="col">Lateness<br>(Hour:Minuite)</th>
         </tr>
       </thead>
       <tbody>
