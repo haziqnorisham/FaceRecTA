@@ -86,12 +86,12 @@ def GetDeviceID(request):
     emp_grouped = [[None]]
     #emp_grouped[0] = [0,2]
     # Create a connectin to the database
-    conn = create_connection(r"C:\sqlite\db\pythonsqlite.db")
-    cur = conn.cursor()
+    #conn = create_connection(r"C:\sqlite\db\pythonsqlite.db")
+    #cur = conn.cursor()
     #cur.execute(r"SELECT * FROM attendence")
     #cur.execute(r"SELECT * FROM attendence WHERE date(enter_time) = date('now') and name like 'basyir'")
-    cur.execute(r"SELECT * FROM attendence WHERE date(enter_time) = date('now')")
-    rows = cur.fetchall()
+    #cur.execute(r"SELECT * FROM attendence WHERE date(enter_time) = date('now')")
+    #rows = cur.fetchall()
 
     temp_data = EmployeeAttendance.objects.all()
     temp_data_list = []
