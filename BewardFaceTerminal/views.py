@@ -95,7 +95,7 @@ def index2(request):
     print('ENTER TIME = ' + str(response_data['info']['CreateTime']))
     print()
 
-    conn = create_connection(r"D:\Projects\DjangoProjects\FaceRecTA\db.sqlite3")
+    conn = create_connection(r"db.sqlite3")
     with conn:
         if conn is not None:
             # create projects table
