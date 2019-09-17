@@ -6,7 +6,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 import sqlite3
 from sqlite3 import Error
-
+from django.contrib.auth.decorators import login_required
 from timeAttendance.models import EmployeeAttendance
 from django.forms.models import model_to_dict
 from datetime import date, datetime, timedelta
@@ -59,6 +59,7 @@ def get_terminal_information(ipAddress, username, passwrod):
     response_data['info'] = a
 
 @csrf_exempt
+@login_required
 def GetDeviceID(request):
 
     date2 = None

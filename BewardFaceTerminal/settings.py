@@ -120,3 +120,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 ALLOWED_HOSTS = ['*']
+LOGIN_REDIRECT_URL = 'tapage'
+LOGIN_URL = 'login'
