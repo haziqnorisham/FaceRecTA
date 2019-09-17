@@ -131,3 +131,7 @@ def home(request):
     #print(type(a))
     template = loader.get_template("mysite/page/home.html")
     return HttpResponse(template.render)
+
+@csrf_exempt
+def homePage(request):
+    return render(request, 'home.html')
