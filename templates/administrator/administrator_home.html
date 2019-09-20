@@ -30,6 +30,7 @@
     <br>
 
     <div class="row">
+        <div class="col-sm"></div>
         {% if request.user.is_superuser %}
         <div class="col-sm text-right"><button type="button" class="btn btn-primary">Register User</button></div>
         {% else %}
@@ -41,6 +42,7 @@
         {% else %}
         <div class="col-sm text-left"><button type="button" class="btn btn-secondary" disabled>Add Device</button></div>
         {% endif %}
+        <div class="col-sm"></div>
     </div>
 
   </div>
