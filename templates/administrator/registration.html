@@ -15,6 +15,17 @@
       <div class="col-sm"></div>
 
       <div class="col-6 bg-light rounded border shadow">
+        <br>
+        {% if messages %}
+           {% for message in messages %}
+           <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+           {% endfor %}
+        {% endif %}
 
         <div class="text-center pt-3">
           <img src="https://i.ibb.co/BN7M0W3/Whats-App-Image-2019-09-16-at-11-30-13-AM.jpg" class="img-responsive" height="50">

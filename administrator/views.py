@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -10,6 +11,7 @@ def home(requests):
 @user_passes_test(lambda u: u.is_superuser)
 def registration(requests):
 
+    registered = {"registered" : False}
     if requests.method == 'POST':
 
         data = requests.POST.copy()
@@ -30,5 +32,9 @@ def registration(requests):
             user.is_superuser=False
 
         user.save()
+        registered["registered"] = True
+        messages.success(requests, 'User Registered')
 
-    return render(requests, "administrator/registration.html")
+    context = {"registered" : registered}
+
+    return render(requests, "administrator/registration.html", context)
