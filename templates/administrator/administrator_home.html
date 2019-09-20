@@ -32,7 +32,7 @@
     <div class="row">
         <div class="col-sm"></div>
         {% if request.user.is_superuser %}
-        <div class="col-sm text-right"><button type="button" class="btn btn-primary">Register User</button></div>
+        <div class="col-sm text-right"><button type="button" class="btn btn-primary" onclick="window.location.href='/administrator/registration'">Register User</button></div>
         {% else %}
         <div class="col-sm text-right"><button type="button" class="btn btn-secondary" disabled>Register User</button></div>
         {% endif %}
