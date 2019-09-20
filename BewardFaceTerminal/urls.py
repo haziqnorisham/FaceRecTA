@@ -17,10 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
+from django.views.generic import RedirectView
+
 urlpatterns = [
-    path('', views.homePage, name='homePage'),
+    path('', RedirectView.as_view(pattern_name='login')),
     path('admin/', admin.site.urls),
     path('time_attendance/', include('timeAttendance.urls')),
+    path('administrator/', include('administrator.urls')),
     path('Subscribe/Snap', views.index, name='index'),
     path('Subscribe/Verify', views.index2, name='index2'),
     path('Subscribe/heartbeat', views.index3, name='index3'),

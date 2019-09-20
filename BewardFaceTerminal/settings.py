@@ -32,12 +32,14 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'timeAttendance.apps.TimeattendanceConfig',
+    'administrator.apps.AdministratorConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -120,5 +122,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 ALLOWED_HOSTS = ['*']
-LOGIN_REDIRECT_URL = 'tapage'
+LOGIN_REDIRECT_URL = 'administrator_home'
 LOGIN_URL = 'login'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
