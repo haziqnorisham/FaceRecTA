@@ -115,7 +115,7 @@
       </div>
 
       <div class="col-sm   text-left">
-        <input type="time" name="usr_time" id="time_input" value="08:00" onchange="checkTime()">
+        <input type="time" name="usr_time" id="time_input2" value="17:00" onchange="checkTime2()">
       </div>
 
     </div>
@@ -195,6 +195,7 @@
                 <td>{{ dat.capture_time_latest }}</td>
                 <td>{{ dat.capture_location_latest }}</td>
                 <td>{{ dat.working_hours }}</td>
+                <td>-</td>
                 <td>-</td>
               </tr>
             {% endif %}
@@ -427,6 +428,57 @@ var i;
   }
 }
 
+function checkTime2(){
+  time_input = document.getElementById("time_input2")
+  tables = document.getElementsByClassName("table");
+
+
+  var i;
+  var s;
+  for(s=0; s<tables.length;s++){
+
+    table = tables[s];
+    number_of_rows = table.getElementsByTagName("tr").length;
+
+    for (i = 0; i < number_of_rows-1 ; i++) {
+        table.rows[i+1].cells[5].style.color = "";
+        table.rows[i+1].cells[5].style.fontWeight = "";
+        table.rows[i+1].cells[9].innerHTML = "-";
+        table.rows[i+1].cells[9].style.fontWeight = "";
+        table.rows[i+1].cells[9].style.color = "";
+      }
+
+
+    for (i = 0; i < number_of_rows-1 ; i++) {
+      temp_enter_time = table.rows[i+1].cells[5].innerHTML;
+      temp_enter_time = temp_enter_time.substring(11, 16);
+
+      if(temp_enter_time > time_input.value){
+        console.log(time_input.value)
+        table.rows[i+1].cells[5].style.color = "green";
+        table.rows[i+1].cells[5].style.fontWeight = "900";
+
+
+
+        d1 = Date.parse(table.rows[i+1].cells[5].innerHTML);
+        d1 = new Date(d1);
+        d2 = Date.parse(table.rows[i+1].cells[5].innerHTML);
+        d2 = new Date(d2);
+        d2.setHours(time_input.value.substring(0,2));
+        d2.setMinutes(time_input.value.substring(3,5));
+
+        d3 = d1-d2;
+
+        console.log(d3);
+
+        table.rows[i+1].cells[9].innerHTML = msToTime(d3)
+
+        table.rows[i+1].cells[9].style.fontWeight = "900";
+        table.rows[i+1].cells[9].style.color = "green";
+      }
+    }
+  }
+}
 
 window.onload = table_check;
 </script>
