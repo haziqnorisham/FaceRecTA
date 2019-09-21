@@ -95,16 +95,35 @@
     </div>
 
 
-<div class="col-sm text-center">
+  <div class="col-sm text-center">
 
-        Shift Start Time :
-        <br>
+    <div class="row">
+      <div class="col-sm   text-right">
+        <label>Shift Start Time:</label>
+      </div>
+
+      <div class="col-sm   text-left">
         <input type="time" name="usr_time" id="time_input" value="08:00" onchange="checkTime()">
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-sm   text-right">
+        <label>Shift End Time:</label>
+      </div>
+
+      <div class="col-sm   text-left">
+        <input type="time" name="usr_time" id="time_input" value="08:00" onchange="checkTime()">
+      </div>
+
+    </div>
 
 
 
+  </div>
 
-</div>
   <div class="col-sm text-center">
     Employee name :
     <br>
@@ -161,6 +180,7 @@
             <th scope="col">Exit Location</th>
             <th scope="col">Working Hours</th>
             <th scope="col">Lateness<br>(Hour:Minuite)</th>
+            <th scope="col">Overtime<br>(Hour:Minuite)</th>
           </tr>
         </thead>
         <tbody>
