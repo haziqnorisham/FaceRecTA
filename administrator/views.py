@@ -44,6 +44,8 @@ def registration(requests):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def sync(requests):
+
     all_employee = EmployeeDetail.objects.all()
     print(all_employee)
+
     return HttpResponse("<h1>Synching Done</h1>")
