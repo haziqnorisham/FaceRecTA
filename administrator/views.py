@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.contrib.auth.models import User
+from timeAttendance.models import EmployeeDetail
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 @login_required
@@ -38,3 +40,10 @@ def registration(requests):
     context = {"registered" : registered}
 
     return render(requests, "administrator/registration.html", context)
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def sync(requests):
+    all_employee = EmployeeDetail.objects.all()
+    print(all_employee)
+    return HttpResponse("<h1>Synching Done</h1>")

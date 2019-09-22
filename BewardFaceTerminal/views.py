@@ -72,7 +72,7 @@ def index(request):
     imgdata = base64.b64decode(new_string)
     id = str(uuid.uuid1())
     #filename = 'C:/Users/Haziq/Desktop'+id+'.jpg'  # I assume you have a way of picking unique filenames
-    filename = 'C:/Users/Haziq/Desktop/img.jpg'  # I assume you have a way of picking unique filenames
+    filename = 'img.jpg'  # I assume you have a way of picking unique filenames
     with open(filename, 'wb') as f:
         f.write(imgdata)
 
