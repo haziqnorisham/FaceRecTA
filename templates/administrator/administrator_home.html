@@ -32,15 +32,15 @@
     <div class="row">
         <div class="col-sm"></div>
         {% if request.user.is_superuser %}
-        <div class="col-sm text-right"><button type="button" class="btn btn-primary" onclick="window.location.href='/administrator/registration'">Register User</button></div>
+        <div class="col-sm text-right"><button type="button" class="btn btn-block btn-primary" onclick="window.location.href='/administrator/registration'">Register User</button></div>
         {% else %}
-        <div class="col-sm text-right"><button type="button" class="btn btn-secondary" disabled>Register User</button></div>
+        <div class="col-sm text-right"><button type="button" class="btn btn-block btn-secondary" disabled>Register User</button></div>
         {% endif %}
-        <div class="col-sm text-center"><button type="button" class="btn btn-primary" onclick="window.location.href='/time_attendance/btnAction'">Time Attendance</button></div>
+        <div class="col-sm text-center"><button type="button" class="btn btn-block btn-primary" onclick="window.location.href='/time_attendance/btnAction'">Time Attendance</button></div>
         {% if request.user.is_superuser %}
-        <div class="col-sm text-left"><button type="button" class="btn btn-primary">Add Device</button></div>
+        <div class="col-sm text-left"><button type="button" class="btn btn-block btn-primary">Add Device</button></div>
         {% else %}
-        <div class="col-sm text-left"><button type="button" class="btn btn-secondary" disabled>Add Device</button></div>
+        <div class="col-sm text-left"><button type="button" class="btn btn-block btn-secondary" disabled>Add Device</button></div>
         {% endif %}
 
 
@@ -54,15 +54,21 @@
 
       <div class="col-sm text-right">
 
-        <button type="button" class="btn btn-danger" onclick="window.location.href='/administrator/Sync'"">Sync</button>
+        {% if request.user.is_superuser %}
+        <button type="button" class=" btn btn-block btn-danger" onclick="window.location.href='/administrator/Sync'"">Sync</button>
+        {% else %}
+        <button type="button" class="btn btn-block btn-danger" onclick="window.location.href='/administrator/Sync'"" disabled>Sync</button>
+        {% endif %}
 
       </div>
 
       <div class="col-sm text-center">
-        <button type="button" class="btn btn-primary" onclick="window.location.href='/logout'"">Logout</button>
+        <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='/logout'"">Logout</button>
       </div>
 
-      <div class="col-sm"></div>
+      <div class="col-sm">
+        <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='/administrator/employee_add'"">Add->UsrDatabase</button>
+      </div>
 
       <div class="col-sm"></div>
 

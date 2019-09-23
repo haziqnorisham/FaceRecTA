@@ -1,9 +1,15 @@
+import os
+import json
+import requests as requests_import
 from django.contrib import messages
 from django.shortcuts import render
 from django.http import HttpResponse
+from requests.auth import HTTPBasicAuth
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from timeAttendance.models import EmployeeDetail
 from django.contrib.auth.decorators import login_required, user_passes_test
+
 
 @login_required
 def home(requests):
@@ -46,6 +52,85 @@ def registration(requests):
 def sync(requests):
 
     all_employee = EmployeeDetail.objects.all()
-    print(all_employee)
+    for employee in all_employee:
+        print(employee)
 
-    return HttpResponse("<h1>Synching Done</h1>")
+        a = None
+
+        #username = this.username
+        #username = request.POST.get("username")
+        #password = request.POST.get("password")
+
+        #url = "http://192.168.0.33/action/GetSysParam"
+        url = "http://"+"192.168.0.33"+"/action/AddPerson"
+
+        headers = {
+            'Content-Type': "application/json",
+            'User-Agent': "PostmanRuntime/7.16.3",
+            'Accept': "*/*",
+            'Cache-Control': "no-cache",
+            'Postman-Token': "299fa413-9e09-4776-ab1d-5dae8c1ad2e7,95df307a-1643-4b35-b8fd-db3ed2e78a60",
+            'Host': "192.168.0.33",
+            'Accept-Encoding': "gzip, deflate",
+            'Content-Length': "",
+            'Connection': "keep-alive",
+            'cache-control': "no-cache"
+            }
+
+        body = {
+                "operator": "AddPerson",
+                "info": {
+                    "DeviceID":1306861,
+                    "IdType":0,
+                    "PersonType": 0,
+                    "Name":str(employee.name),
+                    "Gender":employee.Gender,
+                    "CardType":0,
+                    "IdCard":str(employee.employee_id),
+                    "CustomizeID":employee.CustomizeID,
+                    "Native": "Johor",
+                    "Tempvalid": 0,
+                    " ChannelAuthority0":"1",
+                    " ChannelAuthority1":"1",
+                    " ChannelAuthority2":"1",
+                    " ChannelAuthority3":"1"
+                  },
+                	"picinfo":"data:image/jpeg;base64,"
+                }
+
+        #response = requests.request("POST", url, headers=headers, auth=HTTPBasicAuth('admin', 'admin'))
+
+        response = requests_import.request("POST", url, headers=headers, auth=HTTPBasicAuth("admin", "admin"), json=body)
+
+        json_data = response.text
+        data = json.loads(json_data)
+        a = data['info']
+        response_data = {}
+        response_data['info'] = a
+
+
+
+    #return HttpResponse("<h1>Synching Done</h1>")
+    return HttpResponse("Added All Person From Database")
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def employee_add(requests):
+
+    if requests.method == 'POST':
+        data = requests.POST.copy()
+        return HttpResponse(data.get("img_name"))
+
+    temp_list = []
+
+    files = os.listdir("static")
+    for file in files:
+        temp_list.append({"name" : str(file)})
+
+    temp_list.reverse()
+
+    context= {
+        'image': temp_list
+        }
+
+    return render(requests, "administrator/employee_add.html", context)
