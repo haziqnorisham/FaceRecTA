@@ -260,17 +260,36 @@ def add_device(requests):
 
         terminal_obj.save()
 
+        """
+        #####################################################################################################################
+        #   TODO
+        #####################################################################################################################
         body2 = {
-                    "operator": "Subscribe",
-                    "info": {
-                        "DeviceID": int(a["DeviceID"]),
-                        "Num": 2,
-                        "Topics":["Snap", "Verify"],
-                        "SubscribeAddr":"http://192.168.0.190:80",
-                        "SubscribeUrl":{"Snap":"/Subscribe/Snap", "Verify":"/Subscribe/Verify", "HeartBeat":"/Subscribe/heartbeat"},
-                        "Auth":"Basic",
-                        "User": "admin",
-                        "Pwd": "admin"
+                "operator": "Subscribe",
+                "info": {
+                    "DeviceID": int(a["DeviceID"]),
+                    "Num": 2,
+                    "Topics":["Snap", "Verify"],
+                    "SubscribeAddr":"http://192.168.0.190:80", #DO NOT HARCODE SUBSCIBE ADDRESS#
+                    "SubscribeUrl":{"Snap":"/Subscribe/Snap", "Verify":"/Subscribe/Verify", "HeartBeat":"/Subscribe/heartbeat"},
+                    "Auth":"Basic",
+                    "User": "admin",
+                    "Pwd": "admin"
+                    }
+                }
+        """
+
+        body2 = {
+                "operator": "Subscribe",
+                "info": {
+                    "DeviceID": int(a["DeviceID"]),
+                    "Num": 2,
+                    "Topics":["Snap", "Verify"],
+                    "SubscribeAddr":"http://192.168.0.190:80",
+                    "SubscribeUrl":{"Snap":"/Subscribe/Snap", "Verify":"/Subscribe/Verify", "HeartBeat":"/Subscribe/heartbeat"},
+                    "Auth":"Basic",
+                    "User": "admin",
+                    "Pwd": "admin"
                     }
                 }
         headers2 = {
