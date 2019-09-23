@@ -9,7 +9,7 @@
 <body>
 
   <br>
-  <div class="conainer">
+  <div class="container">
 
     <div class="row text-center">
       <div class="col-sm"></div>
@@ -29,7 +29,7 @@
 
     <br>
 
-    <div class="row">
+    <div class="row p-2">
         <div class="col-sm"></div>
         {% if request.user.is_superuser %}
         <div class="col-sm text-right"><button type="button" class="btn btn-block btn-primary" onclick="window.location.href='/administrator/registration'">Register User</button></div>
@@ -38,7 +38,7 @@
         {% endif %}
         <div class="col-sm text-center"><button type="button" class="btn btn-block btn-primary" onclick="window.location.href='/time_attendance/btnAction'">Time Attendance</button></div>
         {% if request.user.is_superuser %}
-        <div class="col-sm text-left"><button type="button" class="btn btn-block btn-primary">Add Device</button></div>
+        <div class="col-sm text-left"><button type="button" class="btn btn-block btn-primary" onclick="window.location.href='/administrator/add_device'">Add Device</button></div>
         {% else %}
         <div class="col-sm text-left"><button type="button" class="btn btn-block btn-secondary" disabled>Add Device</button></div>
         {% endif %}
@@ -47,18 +47,12 @@
         <div class="col-sm"></div>
     </div>
 
-    <br>
-
-    <div class="row">
+    <div class="row p-2">
       <div class="col-sm"></div>
 
       <div class="col-sm text-right">
 
-        {% if request.user.is_superuser %}
-        <button type="button" class=" btn btn-block btn-danger" onclick="window.location.href='/administrator/Sync'"">Sync</button>
-        {% else %}
-        <button type="button" class="btn btn-block btn-danger" onclick="window.location.href='/administrator/Sync'"" disabled>Sync</button>
-        {% endif %}
+
 
       </div>
 
@@ -69,9 +63,37 @@
       <div class="col-sm">
         <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='/administrator/employee_add'"">Add->UsrDatabase</button>
       </div>
+      <div class="col-sm"></div>
+    </div>
 
+    <div class="row pt-3">
       <div class="col-sm"></div>
 
+      <div class="col-sm"></div>
+    </div>
+
+    <div class="row pt-3">
+      <div class="col-sm"></div>
+    <div class="col-sm border shadow rounded">
+      <h4>Connected Terminal</h4>
+      <hr>
+      {% if request.user.is_superuser %}
+      <form id="ip_form" method="GET" action="/administrator/Sync/">
+        <div class="form-group ">
+          {% for terminal_dict in terminal_dict_list %}
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="defaultCheck1" name="{{terminal_dict.counter}}" value="{{terminal_dict.terminal_ip}}">
+            <label class="form-check-label" for="defaultCheck1">{{terminal_dict.terminal_name}}</label>
+          </div>
+          {% endfor %}
+        </div>
+        <button type="submit" class=" btn btn-block btn-danger" onclick="window.location.href='/administrator/Sync'"">Sync</button>
+      </form>
+      {% else %}
+      <button type="button" class="btn btn-block btn-danger" onclick="window.location.href='/administrator/Sync'"" disabled>Sync</button>
+      {% endif %}
+    </div>
+    <div class="col-sm"></div>
     </div>
 
   </div>
