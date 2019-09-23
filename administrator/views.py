@@ -1,5 +1,6 @@
 import os
 import json
+import base64
 import requests as requests_import
 from django.contrib import messages
 from django.shortcuts import render
@@ -50,11 +51,16 @@ def registration(requests):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def sync(requests):
-
+    encoded_string = None
     all_employee = EmployeeDetail.objects.all()
     for employee in all_employee:
         print(employee)
 
+        image_name = employee.img_name
+        with open("static/"+image_name, "rb") as image_file:
+            encoded_string = base64.b64encode(image_file.read())
+            print(type(encoded_string))
+        picjson = "data:image/jpeg;base64,"+encoded_string.decode("utf-8")
         a = None
 
         #username = this.username
@@ -87,7 +93,7 @@ def sync(requests):
                     "Gender":employee.Gender,
                     "CardType":0,
                     "IdCard":str(employee.employee_id),
-                    "CustomizeID":employee.CustomizeID,
+                    "CustomizeID":employee.employee_id,
                     "Native": "Johor",
                     "Tempvalid": 0,
                     " ChannelAuthority0":"1",
@@ -95,7 +101,7 @@ def sync(requests):
                     " ChannelAuthority2":"1",
                     " ChannelAuthority3":"1"
                   },
-                	"picinfo":"data:image/jpeg;base64,"
+                	"picinfo": picjson
                 }
 
         #response = requests.request("POST", url, headers=headers, auth=HTTPBasicAuth('admin', 'admin'))
@@ -117,9 +123,23 @@ def sync(requests):
 @user_passes_test(lambda u: u.is_superuser)
 def employee_add(requests):
 
+    registered = {"registered" : False}
+
     if requests.method == 'POST':
         data = requests.POST.copy()
-        return HttpResponse(data.get("img_name"))
+        emp = EmployeeDetail()
+        emp.name = data.get("Name")
+        emp.employee_id = int(data.get("Employee_ID"))
+        if (data.get("Employee") == "male"):
+            emp.Gender = 0
+        else:
+            emp.Gender = 1
+        emp.img_name = data.get("img_name")
+        emp.CustomizeID = 1
+
+        emp.save()
+        registered["registered"] = True
+        messages.success(requests, 'User Registered')
 
     temp_list = []
 
@@ -130,7 +150,8 @@ def employee_add(requests):
     temp_list.reverse()
 
     context= {
-        'image': temp_list
+        'image': temp_list,
+        "registered" : registered
         }
 
     return render(requests, "administrator/employee_add.html", context)

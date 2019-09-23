@@ -11,4 +11,5 @@ class EmployeeDetail(models.Model):
     employee_id = models.IntegerField()
     name = models.CharField(max_length=32)
     Gender = models.IntegerField()
-    CustomizeID = models.IntegerField(unique=True)
+    CustomizeID = models.IntegerField()
+    img_name = models.CharField(max_length=500, null=True)
