@@ -57,11 +57,17 @@
       </div>
 
       <div class="col-sm text-center">
-        <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='/logout'"">Logout</button>
+        <a href="{% url 'logout' %}?next=/">
+          <button type="button" class="btn btn-block btn-danger" >Logout</button>
+        </a>
       </div>
 
       <div class="col-sm">
+        {% if request.user.is_superuser %}
         <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='/administrator/employee_add'"">Add->UsrDatabase</button>
+        {% else %}
+        <button type="button" class="btn btn-block btn-secondary" disabled>Add->UsrDatabase</button>
+        {% endif %}
       </div>
       <div class="col-sm"></div>
     </div>
@@ -91,7 +97,14 @@
         <button type="submit" name="delete" value="delete" class="btn btn-block btn-danger" onclick="window.location.href='/administrator/Sync'"">Delete Terminal</button>
       </form>
       {% else %}
-      <button type="button" class="btn btn-block btn-danger" onclick="window.location.href='/administrator/Sync'"" disabled>Sync</button>
+      <form>
+        <div class="form-group ">
+          <div class="form-check">
+          </div>
+        </div>
+        <button type="submit" name="sync" value="sync" class="btn btn-block btn-secondary" disabled>Sync</button>
+        <button type="submit" name="delete" value="delete" class="btn btn-block btn-secondary" disabled>Delete Terminal</button>
+      </form>
       {% endif %}
     </div>
     <div class="col-sm"></div>
