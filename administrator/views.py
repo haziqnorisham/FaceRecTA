@@ -79,8 +79,13 @@ def sync(requests):
                 print(requests.GET.keys())
 
                 for key in requests.GET.keys():
-                    print(data.get(key))
-                    ip_address_list.append(data.get(key))
+
+                    print(str(data.get(key)) == "sync")
+                    if (str(data.get(key)) == "sync"):
+                        t=None
+                    else:
+                        print(data.get(key))
+                        ip_address_list.append(data.get(key))
 
                 for ip_address in ip_address_list:
                     a2 = None
