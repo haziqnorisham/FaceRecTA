@@ -68,115 +68,133 @@ def registration(requests):
 def sync(requests):
 
     ip_address_list = []
+    ip_address_list2 = []
     deviceID_list = []
 
     if requests.method == 'GET':
         data = requests.GET.copy()
-        #ip_address_list = data.get("ip_list").splitlines()
-        print(requests.GET.keys())
+        if "sync" in requests.GET.keys():
+            try:
+                #ip_address_list = data.get("ip_list").splitlines()
+                print(requests.GET.keys())
 
-        for key in requests.GET.keys():
-            print(data.get(key))
-            ip_address_list.append(data.get(key))
+                for key in requests.GET.keys():
+                    print(data.get(key))
+                    ip_address_list.append(data.get(key))
 
-        for ip_address in ip_address_list:
-            a2 = None
+                for ip_address in ip_address_list:
+                    a2 = None
 
-            #username = this.username
-            #username = request.POST.get("username")
-            #password = request.POST.get("password")
+                    #username = this.username
+                    #username = request.POST.get("username")
+                    #password = request.POST.get("password")
 
-            #url = "http://192.168.0.33/action/GetSysParam"
-            url = "http://"+ip_address+"/action/GetSysParam"
+                    #url = "http://192.168.0.33/action/GetSysParam"
+                    url = "http://"+ip_address+"/action/GetSysParam"
 
-            headers = {
-                'Content-Type': "application/json",
-                'User-Agent': "PostmanRuntime/7.16.3",
-                'Accept': "*/*",
-                'Cache-Control': "no-cache",
-                'Postman-Token': "299fa413-9e09-4776-ab1d-5dae8c1ad2e7,95df307a-1643-4b35-b8fd-db3ed2e78a60",
-                'Host': ip_address,
-                'Accept-Encoding': "gzip, deflate",
-                'Content-Length': "",
-                'Connection': "keep-alive",
-                'cache-control': "no-cache"
-                }
-
-            #response = requests.request("POST", url, headers=headers, auth=HTTPBasicAuth('admin', 'admin'))
-
-            response = requests_import.request("POST", url, headers=headers, auth=HTTPBasicAuth("admin", "admin"))
-
-            json_data = response.text
-            data = json.loads(json_data)
-            a2 = data['info']
-            response_data = {}
-            response_data['info'] = a2
-            print(a2["DeviceID"])
-            deviceID_list.append(a2["DeviceID"])
-
-            encoded_string = None
-            all_employee = EmployeeDetail.objects.all()
-            for employee in all_employee:
-                #print(employee)
-
-                image_name = employee.img_name
-                with open("static/"+image_name, "rb") as image_file:
-                    encoded_string = base64.b64encode(image_file.read())
-                    #print(type(encoded_string))
-                picjson = "data:image/jpeg;base64,"+encoded_string.decode("utf-8")
-                a = None
-
-                #username = this.username
-                #username = request.POST.get("username")
-                #password = request.POST.get("password")
-
-                #url = "http://192.168.0.33/action/GetSysParam"
-                url = "http://"+ip_address+"/action/AddPerson"
-
-                headers = {
-                    'Content-Type': "application/json",
-                    'User-Agent': "PostmanRuntime/7.16.3",
-                    'Accept': "*/*",
-                    'Cache-Control': "no-cache",
-                    'Postman-Token': "299fa413-9e09-4776-ab1d-5dae8c1ad2e7,95df307a-1643-4b35-b8fd-db3ed2e78a60",
-                    'Host': ip_address,
-                    'Accept-Encoding': "gzip, deflate",
-                    'Content-Length': "",
-                    'Connection': "keep-alive",
-                    'cache-control': "no-cache"
-                    }
-
-                body = {
-                        "operator": "AddPerson",
-                        "info": {
-                            "DeviceID":int(a2["DeviceID"]),
-                            "IdType":0,
-                            "PersonType": 0,
-                            "Name":str(employee.name),
-                            "Gender":employee.Gender,
-                            "CardType":0,
-                            "IdCard":str(employee.employee_id),
-                            "CustomizeID":employee.employee_id,
-                            "Native": "Johor",
-                            "Tempvalid": 0,
-                            " ChannelAuthority0":"1",
-                            " ChannelAuthority1":"1",
-                            " ChannelAuthority2":"1",
-                            " ChannelAuthority3":"1"
-                          },
-                        	"picinfo": picjson
+                    headers = {
+                        'Content-Type': "application/json",
+                        'User-Agent': "PostmanRuntime/7.16.3",
+                        'Accept': "*/*",
+                        'Cache-Control': "no-cache",
+                        'Postman-Token': "299fa413-9e09-4776-ab1d-5dae8c1ad2e7,95df307a-1643-4b35-b8fd-db3ed2e78a60",
+                        'Host': ip_address,
+                        'Accept-Encoding': "gzip, deflate",
+                        'Content-Length': "",
+                        'Connection': "keep-alive",
+                        'cache-control': "no-cache"
                         }
 
-                #response = requests.request("POST", url, headers=headers, auth=HTTPBasicAuth('admin', 'admin'))
+                    #response = requests.request("POST", url, headers=headers, auth=HTTPBasicAuth('admin', 'admin'))
 
-                response = requests_import.request("POST", url, headers=headers, auth=HTTPBasicAuth("admin", "admin"), json=body)
+                    response = requests_import.request("POST", url, headers=headers, auth=HTTPBasicAuth("admin", "admin"))
 
-                json_data = response.text
-                data = json.loads(json_data)
-                a = data['info']
-                response_data = {}
-                response_data['info'] = a
+                    json_data = response.text
+                    data = json.loads(json_data)
+                    a2 = data['info']
+                    response_data = {}
+                    response_data['info'] = a2
+                    print(a2["DeviceID"])
+                    deviceID_list.append(a2["DeviceID"])
 
+                    encoded_string = None
+                    all_employee = EmployeeDetail.objects.all()
+                    for employee in all_employee:
+                        #print(employee)
+
+                        image_name = employee.img_name
+                        with open("static/"+image_name, "rb") as image_file:
+                            encoded_string = base64.b64encode(image_file.read())
+                            #print(type(encoded_string))
+                        picjson = "data:image/jpeg;base64,"+encoded_string.decode("utf-8")
+                        a = None
+
+                        #username = this.username
+                        #username = request.POST.get("username")
+                        #password = request.POST.get("password")
+
+                        #url = "http://192.168.0.33/action/GetSysParam"
+                        url = "http://"+ip_address+"/action/AddPerson"
+
+                        headers = {
+                            'Content-Type': "application/json",
+                            'User-Agent': "PostmanRuntime/7.16.3",
+                            'Accept': "*/*",
+                            'Cache-Control': "no-cache",
+                            'Postman-Token': "299fa413-9e09-4776-ab1d-5dae8c1ad2e7,95df307a-1643-4b35-b8fd-db3ed2e78a60",
+                            'Host': ip_address,
+                            'Accept-Encoding': "gzip, deflate",
+                            'Content-Length': "",
+                            'Connection': "keep-alive",
+                            'cache-control': "no-cache"
+                            }
+
+                        body = {
+                                "operator": "AddPerson",
+                                "info": {
+                                    "DeviceID":int(a2["DeviceID"]),
+                                    "IdType":0,
+                                    "PersonType": 0,
+                                    "Name":str(employee.name),
+                                    "Gender":employee.Gender,
+                                    "CardType":0,
+                                    "IdCard":str(employee.employee_id),
+                                    "CustomizeID":employee.employee_id,
+                                    "Native": "Johor",
+                                    "Tempvalid": 0,
+                                    " ChannelAuthority0":"1",
+                                    " ChannelAuthority1":"1",
+                                    " ChannelAuthority2":"1",
+                                    " ChannelAuthority3":"1"
+                                  },
+                                	"picinfo": picjson
+                                }
+
+                        #response = requests.request("POST", url, headers=headers, auth=HTTPBasicAuth('admin', 'admin'))
+
+                        response = requests_import.request("POST", url, headers=headers, auth=HTTPBasicAuth("admin", "admin"), json=body)
+
+                        json_data = response.text
+                        data = json.loads(json_data)
+                        a = data['info']
+                        response_data = {}
+                        response_data['info'] = a
+            except:
+                return HttpResponse("ERROR Synching")
+
+        else:
+            print(requests.GET.keys())
+
+            for key in requests.GET.keys():
+                #print(data.get(key))
+                ip_address_list2.append(data.get(key))
+
+            for ip_address in ip_address_list2:
+                try:
+                    print(ip_address)
+                    TerminalDetails.objects.get(terminal_ip=ip_address).delete()
+                except:
+                    pass
 
 
     #return HttpResponse("<h1>Synching Done</h1>")
@@ -231,81 +249,85 @@ def add_device(requests):
 
         ip_address = data.get("ip_address")
 
-        a = None
-        url = "http://"+ip_address+"/action/GetSysParam"
+        try:
+            a = None
+            url = "http://"+ip_address+"/action/GetSysParam"
 
-        headers = {
-            'Content-Type': "application/json",
-            'User-Agent': "PostmanRuntime/7.16.3",
-            'Accept': "*/*",
-            'Cache-Control': "no-cache",
-            'Postman-Token': "299fa413-9e09-4776-ab1d-5dae8c1ad2e7,95df307a-1643-4b35-b8fd-db3ed2e78a60",
-            'Host': ip_address,
-            'Accept-Encoding': "gzip, deflate",
-            'Content-Length': "",
-            'Connection': "keep-alive",
-            'cache-control': "no-cache"
-            }
-
-        response = requests_import.request("POST", url, headers=headers, auth=HTTPBasicAuth("admin", "admin"))
-
-        json_data = response.text
-        data = json.loads(json_data)
-        a = data['info']
-        response_data = {}
-        response_data['info'] = a
-        print(a["DeviceID"])
-
-        terminal_obj.terminal_id = int(a["DeviceID"])
-
-        terminal_obj.save()
-
-        """
-        #####################################################################################################################
-        #   TODO
-        #####################################################################################################################
-        body2 = {
-                "operator": "Subscribe",
-                "info": {
-                    "DeviceID": int(a["DeviceID"]),
-                    "Num": 2,
-                    "Topics":["Snap", "Verify"],
-                    "SubscribeAddr":"http://192.168.0.190:80", #DO NOT HARCODE SUBSCIBE ADDRESS#
-                    "SubscribeUrl":{"Snap":"/Subscribe/Snap", "Verify":"/Subscribe/Verify", "HeartBeat":"/Subscribe/heartbeat"},
-                    "Auth":"Basic",
-                    "User": "admin",
-                    "Pwd": "admin"
-                    }
+            headers = {
+                'Content-Type': "application/json",
+                'User-Agent': "PostmanRuntime/7.16.3",
+                'Accept': "*/*",
+                'Cache-Control': "no-cache",
+                'Postman-Token': "299fa413-9e09-4776-ab1d-5dae8c1ad2e7,95df307a-1643-4b35-b8fd-db3ed2e78a60",
+                'Host': ip_address,
+                'Accept-Encoding': "gzip, deflate",
+                'Content-Length': "",
+                'Connection': "keep-alive",
+                'cache-control': "no-cache"
                 }
-        """
 
-        body2 = {
-                "operator": "Subscribe",
-                "info": {
-                    "DeviceID": int(a["DeviceID"]),
-                    "Num": 2,
-                    "Topics":["Snap", "Verify"],
-                    "SubscribeAddr":"http://192.168.0.190:80",
-                    "SubscribeUrl":{"Snap":"/Subscribe/Snap", "Verify":"/Subscribe/Verify", "HeartBeat":"/Subscribe/heartbeat"},
-                    "Auth":"Basic",
-                    "User": "admin",
-                    "Pwd": "admin"
+            response = requests_import.request("POST", url, headers=headers, auth=HTTPBasicAuth("admin", "admin"))
+
+            json_data = response.text
+            data = json.loads(json_data)
+            a = data['info']
+            response_data = {}
+            response_data['info'] = a
+            print(a["DeviceID"])
+            terminal_obj.terminal_id = int(a["DeviceID"])
+
+            terminal_obj.save()
+
+            """
+            #####################################################################################################################
+            #   TODO
+            #####################################################################################################################
+            body2 = {
+                    "operator": "Subscribe",
+                    "info": {
+                        "DeviceID": int(a["DeviceID"]),
+                        "Num": 2,
+                        "Topics":["Snap", "Verify"],
+                        "SubscribeAddr":"http://192.168.0.190:80", #DO NOT HARCODE SUBSCIBE ADDRESS#
+                        "SubscribeUrl":{"Snap":"/Subscribe/Snap", "Verify":"/Subscribe/Verify", "HeartBeat":"/Subscribe/heartbeat"},
+                        "Auth":"Basic",
+                        "User": "admin",
+                        "Pwd": "admin"
+                        }
                     }
-                }
-        headers2 = {
-            'Content-Type': "application/json",
-            'Authorization': "Basic YWRtaW46YWRtaW4=",
-            'User-Agent': "PostmanRuntime/7.16.3",
-            'Accept': "*/*",
-            'Cache-Control': "no-cache",
-            'Postman-Token': "60ee7fb9-57cd-48c0-9d83-388d78ce51ea,4e2240de-573c-49d0-a6e1-26b8fdc47c15",
-            'Host': ip_address,
-            'Accept-Encoding': "gzip, deflate",
-            'Content-Length': "392",
-            'Connection': "keep-alive",
-            'cache-control': "no-cache"
-            }
+            """
 
-        url2 = "http://"+ip_address+"/action/Subscribe"
-        requests_import.request("POST", url2, json=body2, headers=headers2)
+            body2 = {
+                    "operator": "Subscribe",
+                    "info": {
+                        "DeviceID": int(a["DeviceID"]),
+                        "Num": 2,
+                        "Topics":["Snap", "Verify"],
+                        "SubscribeAddr":"http://"+data.get("server_ip_address")+":80",
+                        "SubscribeUrl":{"Snap":"/Subscribe/Snap", "Verify":"/Subscribe/Verify", "HeartBeat":"/Subscribe/heartbeat"},
+                        "Auth":"Basic",
+                        "User": "admin",
+                        "Pwd": "admin"
+                        }
+                    }
+            headers2 = {
+                'Content-Type': "application/json",
+                'Authorization': "Basic YWRtaW46YWRtaW4=",
+                'User-Agent': "PostmanRuntime/7.16.3",
+                'Accept': "*/*",
+                'Cache-Control': "no-cache",
+                'Postman-Token': "60ee7fb9-57cd-48c0-9d83-388d78ce51ea,4e2240de-573c-49d0-a6e1-26b8fdc47c15",
+                'Host': ip_address,
+                'Accept-Encoding': "gzip, deflate",
+                'Content-Length': "392",
+                'Connection': "keep-alive",
+                'cache-control': "no-cache"
+                }
+
+            url2 = "http://"+ip_address+"/action/Subscribe"
+            requests_import.request("POST", url2, json=body2, headers=headers2)
+            messages.success(requests, 'Successfully Added Device')
+        except:
+            messages.error(requests, 'Failed Adding Device')
+
     return render(requests, "administrator/add_device.html")

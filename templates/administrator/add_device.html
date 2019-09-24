@@ -35,13 +35,18 @@
         <form class="p-3" method="POST" action="/administrator/add_device/">
           {% csrf_token %}
           <div class="form-group">
-            IP Address :
+            Terminal IP Address :
             <input class="form-control" placeholder="IP Address" name="ip_address" value= "{{ ip_address }}">
           </div>
 
           <div class="form-group">
-            Device Name :
+            Terminal Name :
             <input class="form-control" placeholder="Device Name" name="device_name" value="{{ device_name }}">
+          </div>
+
+          <div class="form-group">
+            Server IP Address :
+            <input class="form-control" placeholder="IP Address" name="server_ip_address" value= "{{ server_ip_address }}">
           </div>
 
           <button type="submit" class="btn btn-primary">Submit</button>
