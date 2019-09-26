@@ -257,6 +257,8 @@ def add_device(requests):
         try:
             a = None
             url = "http://"+ip_address+"/action/GetSysParam"
+            server_url = "http://"+str(data.get("server_ip_address"))+":80"
+            print(server_url)
 
             headers = {
                 'Content-Type': "application/json",
@@ -281,26 +283,7 @@ def add_device(requests):
             print(a["DeviceID"])
             terminal_obj.terminal_id = int(a["DeviceID"])
 
-            terminal_obj.save()
 
-            """
-            #####################################################################################################################
-            #   TODO
-            #####################################################################################################################
-            body2 = {
-                    "operator": "Subscribe",
-                    "info": {
-                        "DeviceID": int(a["DeviceID"]),
-                        "Num": 2,
-                        "Topics":["Snap", "Verify"],
-                        "SubscribeAddr":"http://192.168.0.190:80", #DO NOT HARCODE SUBSCIBE ADDRESS#
-                        "SubscribeUrl":{"Snap":"/Subscribe/Snap", "Verify":"/Subscribe/Verify", "HeartBeat":"/Subscribe/heartbeat"},
-                        "Auth":"Basic",
-                        "User": "admin",
-                        "Pwd": "admin"
-                        }
-                    }
-            """
 
             body2 = {
                     "operator": "Subscribe",
@@ -308,13 +291,14 @@ def add_device(requests):
                         "DeviceID": int(a["DeviceID"]),
                         "Num": 2,
                         "Topics":["Snap", "Verify"],
-                        "SubscribeAddr":"http://"+data.get("server_ip_address")+":80",
+                        "SubscribeAddr":server_url,
                         "SubscribeUrl":{"Snap":"/Subscribe/Snap", "Verify":"/Subscribe/Verify", "HeartBeat":"/Subscribe/heartbeat"},
                         "Auth":"Basic",
                         "User": "admin",
                         "Pwd": "admin"
                         }
                     }
+
             headers2 = {
                 'Content-Type': "application/json",
                 'Authorization': "Basic YWRtaW46YWRtaW4=",
@@ -331,6 +315,7 @@ def add_device(requests):
 
             url2 = "http://"+ip_address+"/action/Subscribe"
             requests_import.request("POST", url2, json=body2, headers=headers2)
+            terminal_obj.save()
             messages.success(requests, 'Successfully Added Device')
         except:
             messages.error(requests, 'Failed Adding Device')
