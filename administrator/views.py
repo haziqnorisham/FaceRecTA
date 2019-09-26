@@ -221,7 +221,7 @@ def employee_add(requests):
         else:
             emp.Gender = 1
         emp.img_name = data.get("img_name")
-        emp.CustomizeID = 1
+        emp.CustomizeID = data.get("Employee_ID")
 
         emp.save()
         registered["registered"] = True
@@ -321,3 +321,39 @@ def add_device(requests):
             messages.error(requests, 'Failed Adding Device')
 
     return render(requests, "administrator/add_device.html")
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def employee_list(requests):
+
+    if requests.method == 'POST':
+        data = requests.POST.copy()
+        print(data.get("employee_id"))
+
+        EmployeeDetail.objects.get(employee_id = data.get("employee_id")).delete()
+
+    employee_dict_list = []
+    temp = "female"
+
+    employee_list = EmployeeDetail.objects.all()
+    for employee in employee_list:
+
+
+
+        if(employee.Gender == 0):
+            temp = "male"
+
+        employee_dict = {
+                    "name": employee.name,
+                    "employee_id": employee.employee_id,
+                    "gender": temp,
+                    "img_name": employee.img_name
+        }
+
+        employee_dict_list.append(employee_dict)
+
+
+    context={
+        "employee_list": employee_dict_list
+    }
+    return render(requests, "administrator/employee_list.html", context)
