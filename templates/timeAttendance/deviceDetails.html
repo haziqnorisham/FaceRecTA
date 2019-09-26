@@ -22,6 +22,7 @@
   <div class="container text-center csb">
     <img src="https://i.ibb.co/BN7M0W3/Whats-App-Image-2019-09-16-at-11-30-13-AM.jpg" class="img-responsive" alt="Responsive image" border="0">
     <h2>Time attendance system</h2>
+    <button type="button" class="btn btn-warning" onclick="home()">Home</button>
   </div>
   <div class="container">
     <hr class="style"/>
@@ -482,7 +483,11 @@ function checkTime2(){
 
 window.onload = table_check;
 </script>
-
+<script>
+    function home() {
+      location.replace("/administrator")
+    }
+  </script>
 </body>
 <br>
 <!-- Footer -->
