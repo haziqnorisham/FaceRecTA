@@ -41,7 +41,10 @@
               <th scope="col">Name</th>
               <th scope="col">Gender</th>
               <th scope="col">Picture</th>
+              {% if request.user.is_superuser %}
               <th scope="col">Action</th>
+              {% else %}
+              {% endif %}
             </tr>
           </thead>
           <tbody>
@@ -50,12 +53,15 @@
               <td>{{employee.employee_id}}</td>
               <td>{{employee.name}}</td>
               <td>{{employee.gender}}</td>
-              <td><img src="{% static employee.img_name %}" class="img-responsive"></td>
+              <td><img src="{% static employee.img_name %}" class="img-responsive" height="149" width="132"></td>
 
+              {% if request.user.is_superuser %}
               <form class=""  method="POST">
                 {% csrf_token %}
                   <td><button type="submit" class="btn btn-danger" name="employee_id" value="{{employee.employee_id}}">Delete Entry</button></td>
               </form>
+              {% else %}
+              {% endif %}
 
             </tr>
             {% endfor %}

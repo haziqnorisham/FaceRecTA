@@ -323,7 +323,6 @@ def add_device(requests):
     return render(requests, "administrator/add_device.html")
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser)
 def employee_list(requests):
 
     if requests.method == 'POST':
