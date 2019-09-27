@@ -172,9 +172,10 @@
       <table class="table " id="timeTable">
         <thead>
           <tr>
-            <th scope="col">ID</th>
             <th scope="col">Employee ID</th>
             <th scope="col">Name</th>
+            <th scope="col">Department</th>
+            <th scope="col">Branch</th>
             <th scope="col">Enter Time</th>
             <th scope="col">Enter Location</th>
             <th scope="col">Exit Time</th>
@@ -188,9 +189,10 @@
           {% for dat in data %}
             {% if date_temp.date == dat.date %}
               <tr>
-                <th scope="row">{{ dat.id }}</th>
                 <td>{{ dat.employee_id }}</td>
                 <td>{{ dat.name }}</td>
+                <td>{{ dat.department }}</td>
+                <td>{{ dat.branch }}</td>
                 <td>{{ dat.capture_time_earliest }}</td>
                 <td>{{ dat.capture_location_earliest }}</td>
                 <td>{{ dat.capture_time_latest }}</td>

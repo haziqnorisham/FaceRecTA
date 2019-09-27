@@ -124,14 +124,14 @@ def GetDeviceID(request):
     employee_id_list_list = []
     for date_range_individual in date_range:
         #employee_id_list = EmployeeAttendance.objects.values('employee_id').filter(capture_time__contains = str(date2)).distinct()
-        employee_id_list = EmployeeAttendance.objects.values('employee_id').filter(capture_time__contains = str(date_range_individual)).distinct()
+        employee_id_list = EmployeeAttendance.objects.values('EmployeeDetail').filter(capture_time__contains = str(date_range_individual)).distinct()
         #employee_id_list_list.append(EmployeeAttendance.objects.values('employee_id').filter(capture_time__contains = str(date_range_individual)).distinct())
 
 
         for employee_id_dict in employee_id_list:
 
             #temp2 = EmployeeAttendance.objects.filter(employee_id = employee_id_dict['employee_id'], capture_time__contains = str(date2))
-            temp2 = EmployeeAttendance.objects.filter(employee_id = employee_id_dict['employee_id'], capture_time__contains = str(date_range_individual))
+            temp2 = EmployeeAttendance.objects.filter(EmployeeDetail = employee_id_dict['EmployeeDetail'], capture_time__contains = str(date_range_individual))
 
             temp2_earliest = temp2.earliest('capture_time')
             temp2_latest = temp2.latest('capture_time')
@@ -141,7 +141,7 @@ def GetDeviceID(request):
 
             working_hours = temp2_datetime_latest - temp2_datetime_earliest
 
-            temp_employee_daily_info = {'id': temp2_earliest.id, 'employee_id': temp2_earliest.employee_id, 'name': temp2_earliest.name, 'capture_time_earliest': temp2_earliest.capture_time, 'capture_location_earliest': temp2_earliest.capture_location, 'capture_time_latest': temp2_latest.capture_time, 'capture_location_latest':temp2_latest.capture_location, 'working_hours':str(working_hours), 'date':date_range_individual}
+            temp_employee_daily_info = { 'branch': temp2_earliest.EmployeeDetail.branch ,'department': temp2_earliest.EmployeeDetail.department,'employee_id': temp2_earliest.EmployeeDetail.id, 'name': temp2_earliest.EmployeeDetail.name, 'capture_time_earliest': temp2_earliest.capture_time, 'capture_location_earliest': temp2_earliest.capture_location.terminal_name, 'capture_time_latest': temp2_latest.capture_time, 'capture_location_latest':temp2_latest.capture_location.terminal_name, 'working_hours':str(working_hours), 'date':date_range_individual}
 
             temp_data_list.append(temp_employee_daily_info)
 

@@ -15,7 +15,7 @@
 
       <div class="col-sm"></div>
 
-      <div class="col-8 bg-light rounded border shadow">
+      <div class="col-10 bg-light rounded border shadow">
         <br>
         {% if messages %}
            {% for message in messages %}
@@ -40,6 +40,8 @@
               <th scope="col">Employee ID</th>
               <th scope="col">Name</th>
               <th scope="col">Gender</th>
+              <th scope="col">Department</th>
+              <th scope="col">Branch</th>
               <th scope="col">Picture</th>
               {% if request.user.is_superuser %}
               <th scope="col">Action</th>
@@ -53,6 +55,8 @@
               <td>{{employee.employee_id}}</td>
               <td>{{employee.name}}</td>
               <td>{{employee.gender}}</td>
+              <td>{{employee.department}}</td>
+              <td>{{employee.branch}}</td>
               <td><img src="{% static employee.img_name %}" class="img-responsive" height="149" width="132"></td>
 
               {% if request.user.is_superuser %}

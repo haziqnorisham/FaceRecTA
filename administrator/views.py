@@ -215,14 +215,15 @@ def employee_add(requests):
         data = requests.POST.copy()
         emp = EmployeeDetail()
         emp.name = data.get("Name")
-        emp.employee_id = int(data.get("Employee_ID"))
+        emp.id = int(data.get("Employee_ID"))
         if (data.get("Employee") == "male"):
-            emp.Gender = 0
+            emp.gender = 0
         else:
-            emp.Gender = 1
-        emp.img_name = data.get("img_name")
-        emp.CustomizeID = data.get("Employee_ID")
-
+            emp.gender = 1
+        emp.image_name = data.get("img_name")
+        emp.department = data.get("Department")
+        emp.branch = data.get("Branch")
+        emp.status = 0
         emp.save()
         registered["registered"] = True
         messages.success(requests, 'User Registered')
@@ -329,27 +330,34 @@ def employee_list(requests):
         data = requests.POST.copy()
         print(data.get("employee_id"))
 
-        EmployeeDetail.objects.get(employee_id = data.get("employee_id")).delete()
+        temp_emp = EmployeeDetail.objects.get(id = data.get("employee_id"))
+        temp_emp.status = 1
+        temp_emp.save()
 
     employee_dict_list = []
-    temp = "female"
+    temp = "Female"
 
     employee_list = EmployeeDetail.objects.all()
     for employee in employee_list:
 
 
 
-        if(employee.Gender == 0):
-            temp = "male"
+        if(employee.gender == 0):
+            temp = "Male"
+        else:
+            temp = "Female"
 
         employee_dict = {
                     "name": employee.name,
-                    "employee_id": employee.employee_id,
+                    "employee_id": employee.id,
                     "gender": temp,
-                    "img_name": employee.img_name
+                    "img_name": employee.image_name,
+                    "branch": employee.branch,
+                    "department": employee.department
         }
 
-        employee_dict_list.append(employee_dict)
+        if(employee.status == 0):
+            employee_dict_list.append(employee_dict)
 
 
     context={
