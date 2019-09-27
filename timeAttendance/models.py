@@ -13,6 +13,8 @@ class EmployeeDetail(models.Model):
     Gender = models.IntegerField()
     CustomizeID = models.IntegerField()
     img_name = models.CharField(max_length=500, null=True)
+    department = models.CharField(max_length=500, null=True)
+    branch = models.CharField(max_length=500, null=True)
 
 class TerminalDetails(models.Model):
     terminal_id = models.IntegerField(primary_key=True)
