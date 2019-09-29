@@ -142,7 +142,7 @@ def GetDeviceID(request):
             working_hours = temp2_datetime_latest - temp2_datetime_earliest
 
             temp_employee_daily_info = { 'branch': temp2_earliest.EmployeeDetail.branch ,'department': temp2_earliest.EmployeeDetail.department,'employee_id': temp2_earliest.EmployeeDetail.id, 'name': temp2_earliest.EmployeeDetail.name, 'capture_time_earliest': temp2_earliest.capture_time, 'capture_location_earliest': temp2_earliest.capture_location.terminal_name, 'capture_time_latest': temp2_latest.capture_time, 'capture_location_latest':temp2_latest.capture_location.terminal_name, 'working_hours':str(working_hours), 'date':date_range_individual}
-
+            
             temp_data_list.append(temp_employee_daily_info)
 
     #MUST BE A LIST OF DICTIONARY

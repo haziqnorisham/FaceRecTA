@@ -131,7 +131,7 @@
         <select name="Employee" id="name_filter" onchange="name_selector()" >
           <option value="all">All</option>
           {% for dat in data %}
-          <option value={{ dat.name }}>{{ dat.name }}</option>
+          <option value="{{ dat.name }}">{{ dat.name }}</option>
           {% endfor %}
         </select>
       </div>

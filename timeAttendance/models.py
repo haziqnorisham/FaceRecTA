@@ -16,5 +16,5 @@ class TerminalDetails(models.Model):
 
 class EmployeeAttendance(models.Model):
     capture_time = models.CharField(max_length=200)
-    capture_location = models.ForeignKey(TerminalDetails, on_delete=models.CASCADE)
+    capture_location = models.ForeignKey(TerminalDetails,default=000000 ,on_delete=models.SET_DEFAULT)
     EmployeeDetail = models.ForeignKey(EmployeeDetail, on_delete=models.CASCADE, null=True)
