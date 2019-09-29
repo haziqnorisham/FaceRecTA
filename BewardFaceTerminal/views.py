@@ -53,8 +53,7 @@ def insert_entry(conn, project):
     sql = ''' INSERT INTO attendence(id,name,enter_time)
               VALUES(?,?,?) '''
     cur = conn.cursor()
-    #cur.execute(sql, project)
-    cur.execute('insert into timeAttendance_employeeattendance(employee_id,name,capture_time,capture_location) VALUES (?,?,?,?)', project)
+    cur.execute('insert into timeAttendance_employeeattendance(capture_time,capture_location_id,EmployeeDetail_id) VALUES (?,?,?)', project)
     return cur.lastrowid
 
 @csrf_exempt
@@ -106,7 +105,7 @@ def index2(request):
         else:
             print("Error! cannot create the database connection.")
 
-        project = [int(response_data['info']['IdCard']), str(response_data['info']['Name']), str(response_data['info']['CreateTime']), str(response_data['info']['DeviceID'])]
+        project = [str(response_data['info']['CreateTime']), str(response_data['info']['DeviceID']), int(response_data['info']['IdCard'])]
         project_id = insert_entry(conn, project)
 
     print(project_id)

@@ -127,7 +127,7 @@ def sync(requests):
                     for employee in all_employee:
                         #print(employee)
 
-                        image_name = employee.img_name
+                        image_name = employee.image_name
                         with open("static/"+image_name, "rb") as image_file:
                             encoded_string = base64.b64encode(image_file.read())
                             #print(type(encoded_string))
@@ -161,11 +161,11 @@ def sync(requests):
                                     "IdType":0,
                                     "PersonType": 0,
                                     "Name":str(employee.name),
-                                    "Gender":employee.Gender,
+                                    "Gender":employee.gender,
                                     "CardType":0,
-                                    "IdCard":str(employee.employee_id),
-                                    "CustomizeID":employee.employee_id,
-                                    "Native": "Johor",
+                                    "IdCard":str(employee.id),
+                                    "CustomizeID":employee.id,
+                                    "Native": "",
                                     "Tempvalid": 0,
                                     " ChannelAuthority0":"1",
                                     " ChannelAuthority1":"1",
