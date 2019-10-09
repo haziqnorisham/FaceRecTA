@@ -462,6 +462,6 @@ def full_reset(requests):
                 i+=1
             except:
                 i+=1
-                pass
+                break
 
     return render(requests, "administrator/full_reset.html")
