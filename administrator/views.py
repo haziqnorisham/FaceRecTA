@@ -412,7 +412,7 @@ def full_reset(requests):
     TerminalDetails.objects.all().delete()
     EmployeeAttendance.objects.all().delete()
     temp_term = TerminalDetails()
-    temp_term.terminal_id = 1
+    temp_term.terminal_id = 0
     temp_term.terminal_ip = "0.0.0.0"
     temp_term.terminal_name = "Terminal Unavailable"
     temp_term.save()
