@@ -403,3 +403,13 @@ def employee_list(requests):
         "employee_list": employee_dict_list
     }
     return render(requests, "administrator/employee_list.html", context)
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def full_reset(requests):
+
+    EmployeeDetail.objects.all().delete()
+    TerminalDetails.objects.all().delete()
+    EmployeeAttendance.objects.all().delete()
+
+    return render(requests, "administrator/full_reset.html")
