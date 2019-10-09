@@ -336,7 +336,7 @@ def employee_list(requests):
 
         terminal_details_list = TerminalDetails.objects.values_list('terminal_id', 'terminal_ip')
 
-        
+
         for terminal_detail in terminal_details_list:
 
             print()
@@ -344,33 +344,34 @@ def employee_list(requests):
             print(terminal_detail[0])
             print()
 
-            url = "http://"+terminal_detail[1]+"/action/DeletePerson"
+            if(terminal_detail[1] != "0.0.0.0"):
+                url = "http://"+terminal_detail[1]+"/action/DeletePerson"
 
-            body = {
-                    "operator": "DeletePerson",
-                    "info": {
-                        "DeviceID": int(terminal_detail[0]),
-                        "TotalNum": 1,
-                        "IdType": 0,
-                        "CustomizeID": [int(data.get("employee_id"))],
-                        }
-                    }
-
-            headers = {
-                        'Content-Type': "application/json",
-                        'Authorization': "Basic YWRtaW46YWRtaW4=",
-                        'User-Agent': "PostmanRuntime/7.17.1",
-                        'Accept': "*/*",
-                        'Cache-Control': "no-cache",
-                        'Postman-Token': "246f59d4-ccb8-4bec-a3cd-3018a46a685e,1e6fcb78-072c-405c-936a-85c58d4d6960",
-                        'Host': terminal_detail[1],
-                        'Accept-Encoding': "gzip, deflate",
-                        'Content-Length': "169",
-                        'Connection': "keep-alive",
-                        'cache-control': "no-cache"
+                body = {
+                        "operator": "DeletePerson",
+                        "info": {
+                            "DeviceID": int(terminal_detail[0]),
+                            "TotalNum": 1,
+                            "IdType": 0,
+                            "CustomizeID": [int(data.get("employee_id"))],
+                            }
                         }
 
-            response = requests_import.request("POST", url, json=body, headers=headers)
+                headers = {
+                            'Content-Type': "application/json",
+                            'Authorization': "Basic YWRtaW46YWRtaW4=",
+                            'User-Agent': "PostmanRuntime/7.17.1",
+                            'Accept': "*/*",
+                            'Cache-Control': "no-cache",
+                            'Postman-Token': "246f59d4-ccb8-4bec-a3cd-3018a46a685e,1e6fcb78-072c-405c-936a-85c58d4d6960",
+                            'Host': terminal_detail[1],
+                            'Accept-Encoding': "gzip, deflate",
+                            'Content-Length': "169",
+                            'Connection': "keep-alive",
+                            'cache-control': "no-cache"
+                            }
+
+                response = requests_import.request("POST", url, json=body, headers=headers)
 
     employee_dict_list = []
     temp = "Female"
@@ -380,7 +381,7 @@ def employee_list(requests):
 
 
 
-        if(employee.gender == 0):
+        if(employee.gender == "0"):
             temp = "Male"
         else:
             temp = "Female"
