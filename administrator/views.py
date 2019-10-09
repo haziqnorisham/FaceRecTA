@@ -9,8 +9,8 @@ from requests.auth import HTTPBasicAuth
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
-from timeAttendance.models import EmployeeDetail, TerminalDetails
 from django.contrib.auth.decorators import login_required, user_passes_test
+from timeAttendance.models import EmployeeDetail, TerminalDetails, EmployeeAttendance
 
 @login_required
 def home(requests):
@@ -411,5 +411,57 @@ def full_reset(requests):
     EmployeeDetail.objects.all().delete()
     TerminalDetails.objects.all().delete()
     EmployeeAttendance.objects.all().delete()
+    temp_term = TerminalDetails()
+    temp_term.terminal_id = 1
+    temp_term.terminal_ip = "0.0.0.0"
+    temp_term.terminal_name = "Terminal Unavailable"
+    temp_term.save()
+
+    terminal_details_list = TerminalDetails.objects.values_list('terminal_id', 'terminal_ip')
+
+    for terminal_detail in terminal_details_list:
+
+        print()
+        print(terminal_detail[1])
+        print(terminal_detail[0])
+        print()
+
+        i=0
+        while (i<5000):
+            try:
+                print(i)
+                if(terminal_detail[1] != "0.0.0.0"):
+                    url = "http://"+terminal_detail[1]+"/action/DeletePerson"
+
+                    body = {
+                            "operator": "DeletePerson",
+                            "info": {
+                                "DeviceID": int(terminal_detail[0]),
+                                "TotalNum": 1,
+                                "IdType": 1,
+                                "CustomizeID": [i],
+                                }
+                            }
+
+                    headers = {
+                                'Content-Type': "application/json",
+                                'Authorization': "Basic YWRtaW46YWRtaW4=",
+                                'User-Agent': "PostmanRuntime/7.17.1",
+                                'Accept': "*/*",
+                                'Cache-Control': "no-cache",
+                                'Postman-Token': "246f59d4-ccb8-4bec-a3cd-3018a46a685e,1e6fcb78-072c-405c-936a-85c58d4d6960",
+                                'Host': terminal_detail[1],
+                                'Accept-Encoding': "gzip, deflate",
+                                'Content-Length': "169",
+                                'Connection': "keep-alive",
+                                'cache-control': "no-cache"
+                                }
+
+                    response = requests_import.request("POST", url, json=body, headers=headers)
+
+                i+=1
+            except:
+                i+=1
+                pass
 
     return render(requests, "administrator/full_reset.html")
