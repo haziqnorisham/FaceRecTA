@@ -509,3 +509,8 @@ def full_reset(requests):
     temp_term.save()
 
     return render(requests, "administrator/full_reset.html")
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def bld(requests):
+    return HttpResponse("<h1>10102019T0710P")

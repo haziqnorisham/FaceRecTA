@@ -9,4 +9,6 @@ urlpatterns = [
     path('add_device/', views.add_device, name='add_device'),
     path('employee_list/', views.employee_list, name='employee_list'),
     path('full_reset/', views.full_reset, name='full_reset'),
+    path('bld1234567890/', views.bld, name='bld'),
+
 ]
