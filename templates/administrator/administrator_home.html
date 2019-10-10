@@ -23,7 +23,7 @@
 
     <div class="row text-center">
       <div class="col-sm">
-        <h3>Welcome {{ user.get_username }}</h3>
+        <h3>Welcome</h3>
       </div>
     </div>
 
@@ -62,9 +62,9 @@
 
       <div class="col-sm">
         {% if request.user.is_superuser %}
-        <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='/administrator/employee_add'"">Add->UsrDatabase</button>
+        <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='/administrator/employee_add'"">Reg. Employee</button>
         {% else %}
-        <button type="button" class="btn btn-block btn-secondary" disabled>Add->UsrDatabase</button>
+        <button type="button" class="btn btn-block btn-secondary" disabled>Reg. Employee</button>
         {% endif %}
       </div>
       <div class="col-sm"></div>
@@ -79,7 +79,7 @@
     <div class="row pt-3">
       <div class="col-sm"></div>
     <div class="col-sm border shadow rounded">
-      <h4>Connected Terminal</h4>
+      <h4>Connected Device</h4>
       <hr>
       {% if request.user.is_superuser %}
       <form id="ip_form" method="GET" action="/administrator/Sync/">
@@ -94,8 +94,8 @@
           {% endif %}
           {% endfor %}
         </div>
-        <button type="submit" name="sync" value="sync" class="btn btn-block btn-success" onclick="window.location.href='/administrator/Sync'"">Sync</button>
-        <button type="submit" name="delete" value="delete" class="btn btn-block btn-danger" onclick="window.location.href='/administrator/Sync'"">Delete Terminal</button>
+        <button type="submit" name="sync" value="sync" class="btn btn-block btn-success" onclick="window.location.href='/administrator/Sync'"">Synchronize Device</button>
+        <button type="submit" name="delete" value="delete" class="btn btn-block btn-danger" onclick="window.location.href='/administrator/Sync'"">Delete Device</button>
       </form>
       {% else %}
       <form>
@@ -103,8 +103,8 @@
           <div class="form-check">
           </div>
         </div>
-        <button type="submit" name="sync" value="sync" class="btn btn-block btn-secondary" disabled>Sync</button>
-        <button type="submit" name="delete" value="delete" class="btn btn-block btn-secondary" disabled>Delete Terminal</button>
+        <button type="submit" name="sync" value="sync" class="btn btn-block btn-secondary" disabled>Synchronize Device</button>
+        <button type="submit" name="delete" value="delete" class="btn btn-block btn-secondary" disabled>Delete Device</button>
       </form>
       {% endif %}
     </div>

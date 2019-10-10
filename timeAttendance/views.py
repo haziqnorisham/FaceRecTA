@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 import sqlite3
 from sqlite3 import Error
 from django.contrib.auth.decorators import login_required
-from timeAttendance.models import EmployeeAttendance
+from timeAttendance.models import EmployeeAttendance, EmployeeDetail
 from django.forms.models import model_to_dict
 from datetime import date, datetime, timedelta
 
@@ -142,12 +142,24 @@ def GetDeviceID(request):
             working_hours = temp2_datetime_latest - temp2_datetime_earliest
 
             temp_employee_daily_info = { 'branch': temp2_earliest.EmployeeDetail.branch ,'department': temp2_earliest.EmployeeDetail.department,'employee_id': temp2_earliest.EmployeeDetail.id, 'name': temp2_earliest.EmployeeDetail.name, 'capture_time_earliest': temp2_earliest.capture_time, 'capture_location_earliest': temp2_earliest.capture_location.terminal_name, 'capture_time_latest': temp2_latest.capture_time, 'capture_location_latest':temp2_latest.capture_location.terminal_name, 'working_hours':str(working_hours), 'date':date_range_individual}
-            
+
             temp_data_list.append(temp_employee_daily_info)
+
+    all_employee_details = EmployeeDetail.objects.all()
+    all_employee_details_dict = []
+    for all_employee_detail in all_employee_details:
+        all_employee_details_dict.append(model_to_dict(all_employee_detail))
+
+    unique_department_list = EmployeeDetail.objects.order_by().values('department').distinct()
+    unique_department_dict_list = []
+    for unique_department in unique_department_list:
+        unique_department_dict_list.append(unique_department)
 
     #MUST BE A LIST OF DICTIONARY
     context= {
         'data': temp_data_list,
+        'all_emp': all_employee_details_dict,
+        'department': unique_department_dict_list,
         'date_tag': date_tag,
         'date_tag2': date_tag_to,
         'date_range': date_range_dict_list

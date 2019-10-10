@@ -12,6 +12,58 @@ from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required, user_passes_test
 from timeAttendance.models import EmployeeDetail, TerminalDetails, EmployeeAttendance
 
+def get_all_employee_id():
+
+    id_list = []
+    terminal_details_list = TerminalDetails.objects.values_list('terminal_id', 'terminal_ip')
+
+    for terminal_detail in terminal_details_list:
+
+        if(terminal_detail[1] != "0.0.0.0"):
+
+            url = "http://"+terminal_detail[1]+"/action/SearchPersonList"
+
+            body = {
+                    "operator": "SearchPersonList",
+                    "info": {
+                        "DeviceID": int(terminal_detail[0]),
+                        "BeginTime":"2010-06-01T00:00:00",
+                        "EndTime":"2050-06-19T23:59:59",
+                        "RequestCount":1000,
+                        "Gender":2,
+                        "Age":"0-100",
+                        "MjCardNo":0,
+                        "Name":"",
+                        "BeginNO":0,
+                        "Picture": 0
+                    }
+                }
+
+            headers = {
+                        'Content-Type': "application/json",
+                        'Authorization': "Basic YWRtaW46YWRtaW4=",
+                        'User-Agent': "PostmanRuntime/7.17.1",
+                        'Accept': "*/*",
+                        'Cache-Control': "no-cache",
+                        'Postman-Token': "246f59d4-ccb8-4bec-a3cd-3018a46a685e,1e6fcb78-072c-405c-936a-85c58d4d6960",
+                        'Host': terminal_detail[1],
+                        'Accept-Encoding': "gzip, deflate",
+                        'Content-Length': "169",
+                        'Connection': "keep-alive",
+                        'cache-control': "no-cache"
+                        }
+
+            response = requests_import.request("POST", url, json=body, headers=headers)
+
+            json_data = response.text
+            data = json.loads(json_data)
+            a = data['info']['List']
+            for entry in a:
+                #print (entry['IdCard'])
+                id_list.append(entry['IdCard'])
+
+    return id_list
+
 @login_required
 def home(requests):
 
@@ -409,16 +461,9 @@ def employee_list(requests):
 def full_reset(requests):
 
     EmployeeDetail.objects.all().delete()
-    TerminalDetails.objects.all().delete()
     EmployeeAttendance.objects.all().delete()
-    temp_term = TerminalDetails()
-    temp_term.terminal_id = 0
-    temp_term.terminal_ip = "0.0.0.0"
-    temp_term.terminal_name = "Terminal Unavailable"
-    temp_term.save()
 
     terminal_details_list = TerminalDetails.objects.values_list('terminal_id', 'terminal_ip')
-
     for terminal_detail in terminal_details_list:
 
         print()
@@ -426,42 +471,41 @@ def full_reset(requests):
         print(terminal_detail[0])
         print()
 
-        i=0
-        while (i<5000):
-            try:
-                print(i)
-                if(terminal_detail[1] != "0.0.0.0"):
-                    url = "http://"+terminal_detail[1]+"/action/DeletePerson"
+        if(terminal_detail[1] != "0.0.0.0"):
+            for emp_num in get_all_employee_id():
+                url = "http://"+terminal_detail[1]+"/action/DeletePerson"
 
-                    body = {
-                            "operator": "DeletePerson",
-                            "info": {
-                                "DeviceID": int(terminal_detail[0]),
-                                "TotalNum": 1,
-                                "IdType": 1,
-                                "CustomizeID": [i],
-                                }
+                body = {
+                        "operator": "DeletePerson",
+                        "info": {
+                            "DeviceID": int(terminal_detail[0]),
+                            "TotalNum": 1,
+                            "IdType": 0,
+                            "CustomizeID": [emp_num]
+                            }
+                        }
+
+                headers = {
+                            'Content-Type': "application/json",
+                            'Authorization': "Basic YWRtaW46YWRtaW4=",
+                            'User-Agent': "PostmanRuntime/7.17.1",
+                            'Accept': "*/*",
+                            'Cache-Control': "no-cache",
+                            'Postman-Token': "246f59d4-ccb8-4bec-a3cd-3018a46a685e,1e6fcb78-072c-405c-936a-85c58d4d6960",
+                            'Host': terminal_detail[1],
+                            'Accept-Encoding': "gzip, deflate",
+                            'Content-Length': "169",
+                            'Connection': "keep-alive",
+                            'cache-control': "no-cache"
                             }
 
-                    headers = {
-                                'Content-Type': "application/json",
-                                'Authorization': "Basic YWRtaW46YWRtaW4=",
-                                'User-Agent': "PostmanRuntime/7.17.1",
-                                'Accept': "*/*",
-                                'Cache-Control': "no-cache",
-                                'Postman-Token': "246f59d4-ccb8-4bec-a3cd-3018a46a685e,1e6fcb78-072c-405c-936a-85c58d4d6960",
-                                'Host': terminal_detail[1],
-                                'Accept-Encoding': "gzip, deflate",
-                                'Content-Length': "169",
-                                'Connection': "keep-alive",
-                                'cache-control': "no-cache"
-                                }
+                response = requests_import.request("POST", url, json=body, headers=headers)
 
-                    response = requests_import.request("POST", url, json=body, headers=headers)
-
-                i+=1
-            except:
-                i+=1
-                break
+    TerminalDetails.objects.all().delete()
+    temp_term = TerminalDetails()
+    temp_term.terminal_id = 0
+    temp_term.terminal_ip = "0.0.0.0"
+    temp_term.terminal_name = "Terminal Unavailable"
+    temp_term.save()
 
     return render(requests, "administrator/full_reset.html")
